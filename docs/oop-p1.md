@@ -8,7 +8,9 @@
 
 Se puede definir la herencia como el mecanismo por el cual una clase permite heredar sus características (atributos y métodos) a otra clase. Este mecanismo puede ser usado para la reutilización de código, la cual permite realizar extensiones independientes del software original.
 
-![herencia](./figuras/herencia.png)
+>![herencia](./figuras/herencia.png)
+>
+<small>por <cite>Carlos Villagómez, [Enciclopedia de Programación Orientada a Objetos](https://es.ccm.net/contents/411-poo-herencia)</cite></small>
 
 En el ejemplo de la imagen anterior existe una jerarquía de herencia de tres niveles en los que:
 
@@ -48,7 +50,9 @@ Las ventajas que nos propone el uso de la herencia son las siguientes:
 
 La composición se basa en la creación de clases que realizarán una única y específica función que complementaran a otras clases, las cuales estarán compuestas por ellas. Este mecanismo, nos permitirá delegar las funciones a aquellas clases que se han implementado únicamente para cubrirlas, reutilizando su código fuente donde sea necesario.
 
-![herencia](./figuras/composicion.png)
+>![composición](./figuras/composicion.png)
+>
+<small>por <cite>Arturo Verbel de León, [Diagrama de clases para dummies](http://micaminomaster.com.co/sin-categoria/diagrama-de-clases-para-dummies/)</cite></small>
 
 En el ejemplo anterior se puede observar:
 
@@ -68,7 +72,9 @@ La composición debe ser utilizada cuando se cumplen al menos las siguientes con
 
 La composición por si misma no es polimórfica, lo cual puede ser de sus mayores desventajas. No obstante, esto puede ser facilmente solventado con el uso de interfaces. De esta manera, los objetos compuestos implementarán las interfaces que interese en cada situación, consiguiendo añadir/eliminar las funciones que implementan sin necesidad de afectar a la funcionalidad propuesta por otras clases.
 
-![composición polimorfismo](./figuras/composicion-polimorfismo.png)
+>![composición polimorfismo](./figuras/composicion-polimorfismo.png)
+>
+<small>por <cite>Sergio Martínez Rodríguez, [Herencia vs Composición ¿Tienes claro cuál es el rival más débil?](https://devexperto.com/herencia-vs-composicion/)</cite></small>
 
 En el ejemplo anterior se puede observar:
 
@@ -82,7 +88,9 @@ Como se ha comentado anteriormente, la herencia es un mecanismo muy potente para
 
 A continuación, se muestra una tabla que incluye las diferencias de uso entre la herencia y la composición en algunas de las etapas del desarrollo software y en otros aspectos de interés:
 
-![tabla comparativa](./figuras/tabla-comparativa.png)
+>![tabla comparativa](./figuras/tabla-comparativa.png)
+>
+<small>por <cite>Sergio Martínez Rodríguez, [Herencia vs Composición ¿Tienes claro cuál es el rival más débil?](https://devexperto.com/herencia-vs-composicion/)</cite></small>
 
 ## <span style="color:blue">Ejercicios propuestos</span>
 
@@ -127,13 +135,15 @@ public class ElementsSet<E> extends HashSet<E> {
 ...
 ```
 
-#### Preguntas propuestas:
+#### Preguntas propuestas
 
 a) ¿Es el uso de herencia adecuado para la implementación de la clase "ElementsSet"?, ¿qué salida muestra la función "System.out.println" al invocar el método "getNumberOfAddedElements", 3 o 6?.
 
 b) En el caso de que haya algún problema en la implementación anterior, proponga una solución alternativa usando composición que resuelva el problema.
 
 ### Ejercicio 2
+
+Dado los siguientes fragmentos de código responder a las siguientes preguntas:
 
 #### Animal.java
 
@@ -211,7 +221,7 @@ public class Dog extends Animal {
 ...
 ```
 
-#### Preguntas propuestas:
+#### Preguntas propuestas
 
 a) ¿Es correcto el uso de herencia en la implementación de las clases "Cat" y "Dog"?. ¿Qué beneficios se obtiene?.
 
@@ -220,6 +230,6 @@ b) En el caso de que no sea correcto, proponga una solución alternativa. ¿Cuá
 ## Referencias
 
 [Blog sobre herencia vs composición]: https://devexperto.com/herencia-vs-composicion/
-[[1] Blog sobre herencia vs composición.][Blog sobre herencia vs composición]
+[[1] Blog Herencia vs Composición ¿Tienes claro cuál es el rival más débil?.][Blog sobre herencia vs composición]
 [Libro effective Java: A programming Language Guide]: https://www.amazon.es/Effective-Java-2nd-Edition-Programming/dp/0321356683/tag=licrla-21
-[[2] Libro effective Java: A programming Language Guide.][Libro effective Java: A programming Language Guide]
+[[2] Libro Effective Java: A programming Language Guide.][Libro effective Java: A programming Language Guide]
