@@ -40,11 +40,11 @@ A continuación, según [[1]][Libro Code Complete: A Practical Handbook of Softw
 - Una subclase sólo utiliza un porcentaje mínimo de las funciones que hereda.
 - Se utilizan comentarios para explicar código díficil de entender.
 - Se usan variables globales.
-- Una función contiene código que parece que será necesario algún día pero ahora mismo no se utiliza.
+- Una función contiene código que parece que será necesario algún día pero en la actualidad no se utiliza.
 
 ### Resumen de posibles refactorizaciones
 
-Finalmente, según [[1]][Libro Code Complete: A Practical Handbook of Software Construction, Second Edition] se incluye un resumen de posibles refactorizaciones a realizar, si en el softare implementado se encontraran alguno de los problemas incluidos en la lista anterior:
+Finalmente, a continuación se incluye algunas de las posibles refactorizaciones propuestas en [[1]][Libro Code Complete: A Practical Handbook of Software Construction, Second Edition]. La aplicación de estas técnicas de refactorización dependerá de si en el softare implementado se encuentran alguno/s de los problemas incluidos en la lista anterior:
 
 #### Refactorización en el uso de datos
 
@@ -52,19 +52,44 @@ Finalmente, según [[1]][Libro Code Complete: A Practical Handbook of Software C
 - Renombrar una variable para darle un nombre más claro o informativo.
 - Convertir una variable que se usa en múltiples sitios en múltiples variables de único uso.
 - Usar una variable local para propósitos locales en lugar de un parámetro de una función.
-- Convertir datos primitivos en una clase.
+- Convertir el uso de datos primitivos en el uso de una clase.
 - Convertir un array (de bajo nivel) en un objeto.
 - Encapsular una colección.
 
 #### Refactorización en la implementación de sentencias/instrucciones
 
+- Descomponer una expresión lógica.
+- Convertir una expresión lógica compleja en una función lógica con un nombre correcto para su definición.
+- Unificar fragmentos de código duplicado en diferentes partes de una expresión condicional.
+- Eliminar el uso de "break" o "return" en lugar del uso de variables de control en los bucles.
+- Devolver lo más rápido posible la solución en lugar de asignar el valor a una variable dentro de instrucciones if-else.
+- Reemplazar condicionales (especialmente las sentencias "case") por el uso de polimorfismo.
+
 #### Refactorización en la implementación de funciones
 
-#### Refactorización en la implementación de clases
+- Extraer una función desde código que se repite en varios lugares.
+- Convertir una función demasiado larga en una clase.
+- Sustituir un algoritmo complejo por uno simple.
+- Combinar funciones similares en una única.
+- Pasar el objeto completo en lugar de seleccionar algunos campos específicos (en el caso de que sean muchos).
+- Pasar algunos campos específicos en lugar del objeto completo (en el caso de que sean pocos campos los utilizados).
 
-#### Refactorización en la implementación de interfaces
+#### Refactorización en la implementación de clases/interfaces
+
+- Extraer código especializado en subclases.
+- Combinar código similar en superclases.
+- Mover una función a otra clase en la que tenga más utilidad.
+- Convertir una clase demasiado larga en dos.
+- Eliminar una clase sin utilidad.
+- Reemplazar herencia por composición (en el caso de que sea necesario).
+- Unificar una superclase y una subclase si su implementación es muy similar.
 
 #### Refactorización a nivel de sistema
+
+- Cambiar la asociación unidireccional de clases a bidireccional (en caso de que sea necesario).
+- Cambiar la asociación bidireccional de clases a unidireccional (en caso de que sea necesario).
+- Proveer de una factoria para crear los objetos en lugar de usar un constructor simple.
+- Reemplazar los códigos de error con excepciones (en caso de que sea necesario).
 
 ## <span style="color:blue">Ejercicios propuestos</span>
 
@@ -114,9 +139,9 @@ public class GroupOfUsers {
 
 #### Preguntas propuestas
 
-a) ¿Existe algún tipo de problema en la implementación anterior?, ¿es necesario realizar refactoring en este caso?. En el caso de que existan problemas, detalle cuáles son y qué tipos de problemas generarían en el futuro si no se realiza el refactoring ahora.
+a) ¿Existe algún tipo de problema en la implementación anterior?, ¿es necesario aplicar refactoring en este caso?. En el caso de que existan problemas, detalle cuáles son y qué tipos de problemas generarían en el futuro si no se aplica el refactoring ahora.
 
-b) En el caso de la implementación necesite refactoring, realice los cambios oportunos e indique las mejoras que aporta su implementación respecto a la original.
+b) En el caso de la implementación necesite la aplicación de refactoring, realice los cambios oportunos e indique las mejoras que aporta su implementación respecto a la original.
 
 ### Ejercicio 2
 
@@ -201,9 +226,9 @@ public class GroupOfUsers {
 
 #### Preguntas propuestas
 
-a) El software del ejercicio anterior ha evolucionado añadiendo nueva funcionalidad en su implementación. ¿Existe algún tipo de problema en esta versión de la implementación?, ¿es necesario realizar refactoring en este caso?. En el caso de que existan problemas, detalle cuáles son y qué tipos de problemas generarían en el futuro si no se realiza el refactoring ahora.
+a) El software del ejercicio anterior ha evolucionado añadiendo nueva funcionalidad en su implementación. ¿Existe algún tipo de problema en esta versión de la implementación?, ¿es necesario aplicar refactoring en este caso?. En el caso de que existan problemas, detalle cuáles son y qué tipos de problemas generarían en el futuro si no se aplica el refactoring ahora.
 
-b) En el caso de la implementación necesite refactoring, realice los cambios oportunos e indique las mejoras que aporta su implementación respecto a la original.
+b) En el caso de la implementación necesite la aplicación de refactoring, realice los cambios oportunos e indique las mejoras que aporta su implementación respecto a la original.
 
 ## Referencias
 [Libro Code Complete: A Practical Handbook of Software Construction, Second Edition]: https://www.amazon.es/Code-Complete-Practical-Handbook-Construction/dp/B00CNKPY6K/ref=sr_1_1?__mk_es_ES=ÅMÅŽÕÑ&dchild=1&keywords=code+complete+second+edition&qid=1584958289&sr=8-1
