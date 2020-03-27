@@ -49,7 +49,7 @@ Finalmente, a continuación se incluye algunas de las posibles refactorizaciones
 #### Refactorización en el uso de datos
 
 - Reemplazar un número utilizado directamente por una constante.
-- Renombrar una variable para darle un nombre más claro o informativo.
+- Renombrar una variable para darle un nombre más claro o explicativo.
 - Convertir una variable que se usa en múltiples sitios en múltiples variables de único uso.
 - Usar una variable local para propósitos locales en lugar de un parámetro de una función.
 - Convertir el uso de datos primitivos en el uso de una clase.
@@ -78,10 +78,11 @@ Finalmente, a continuación se incluye algunas de las posibles refactorizaciones
 
 - Extraer código especializado en subclases.
 - Combinar código similar en superclases.
-- Mover una función a otra clase en la que tenga más utilidad.
+- Mover una función a otra clase en la que tenga más coherencia.
 - Convertir una clase demasiado larga en dos.
 - Eliminar una clase sin utilidad.
 - Reemplazar herencia por composición (en el caso de que sea necesario).
+- Reemplazar composición por herencia (en el caso de que sea necesario).
 - Unificar una superclase y una subclase si su implementación es muy similar.
 
 #### Refactorización a nivel de sistema
