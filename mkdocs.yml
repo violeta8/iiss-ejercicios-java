@@ -16,7 +16,8 @@ nav:
             - Práctica 3: ep-p3.md
 theme:
     name: 'material'
-    logo: 'figuras/uca.eps'    
+    logo:
+        icon: "\uE80C"  
 markdown_extensions:
     - pymdownx.arithmatex
     - pymdownx.betterem:
@@ -39,8 +40,9 @@ markdown_extensions:
     - codehilite:
         guess_lang: false
     - toc:
-        permalink: false
-        baselevel: 1
+        permalink: true
+        baselevel: 0
+    - sane_lists
 extra_javascript:
     - 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML'    
 extra:

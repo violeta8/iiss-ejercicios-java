@@ -92,6 +92,22 @@ Finalmente, a continuación se incluye algunas de las posibles refactorizaciones
 - Proveer de una factoria para crear los objetos en lugar de usar un constructor simple.
 - Reemplazar los códigos de error con excepciones (en caso de que sea necesario).
 
+## Uso de Streams + expresiones Lambda en Java
+
+Un *stream* representa una secuencia de elementos que soportan diferentes tipos de operaciones que permiten realizar cálculos sobre ellos. Las posibles operaciones que se pueden realizar sobre un *stream* pueden ser intermediarias o terminales. Las operaciones intermediarias devuelven un nuevo *stream* permitiendo encadenar múltiples operaciones intermediarias sin usar punto y coma. Por otro lado, las operaciones terminales son nulas o devuelven un resultado de un tipo diferente, por ejemplo un tipo numérico.
+
+>![streams en Java 8](./figuras/streamEjemplo.png)
+>
+<small>por <cite>Benjamin, [Java 8 Stream Tutorial](https://winterbe.com/posts/2014/07/31/java8-stream-tutorial-examples/)</cite></small>
+
+En el ejemplo anterior, las operaciones *filter*, *map* y *sorted* son operaciones intermediarias, mientras que la operación *forEach* es una operación terminal.
+
+Más información: https://www.oracle.com/technetwork/es/articles/java/procesamiento-streams-java-se-8-2763402-esa.html
+
+Por otro lado, se puede observar que la mayoría de las operaciones que se aplican sobre *streams* aceptan algún tipo de parámetro en forma de *expresión lambda*, la cual es una interfaz funcional que especifica el comportamiento exacto de la operación. Estas operaciones no pueden modificar el contenido del *stream* original. En el ejemplo anterior, se puede observar que ninguna de las operaciones modifica la variable *myList* añadiendo o eliminando elementos, sólo se realiza el filtrado de los elementos que no empiezan por "c", se transforman a mayúsculas, se ordenan en orden alfabético y se imprimen por pantalla.
+
+Más información: https://www.oracle.com/technetwork/es/articles/java/expresiones-lambda-api-stream-java-2737544-esa.html
+
 ## <span style="color:blue">Ejercicios propuestos</span>
 
 ### Ejercicio 1
@@ -140,9 +156,22 @@ public class GroupOfUsers {
 
 #### Preguntas propuestas
 
-a) ¿Existe algún tipo de problema en la implementación anterior?, ¿es necesario aplicar refactoring en este caso?. En el caso de que existan problemas, detalle cuáles son y qué tipos de problemas generarían en el futuro si no se aplica el refactoring ahora.
+En la siguiente lista se incluyen 10 posibles problemas que pueden encontrarse en el código de la implementación anterior:
 
-b) En el caso de la implementación necesite la aplicación de refactoring, realice los cambios oportunos e indique las mejoras que aporta su implementación respecto a la original.
+- Código duplicado. 
+- Funciones con nombre que no especifica de forma clara su objetivo. 
+- Rutinas demasiado largas. 
+- Bucles demasiado largos o demasiado anidados. 
+- Funciones con demasiada responsabilidad (no tienen asignada una única responsabilidad u operación a resolver). 
+- Lista de parámetros con demasiados parámetros. 
+- Los cambios de una clase tienden a afectar a otras. 
+- Se utilizan comentarios para explicar código díficil de entender. 
+- Se usan variables globales. 
+- Los cambios dentro de una clase tienden a afectar a otras clases.
+
+a) ¿Existe algún tipo de problema en la implementación anterior de los que se incluye en la lista anterior?, ¿es necesario aplicar refactoring en este caso?. En el caso de que existan problemas, indique cuáles son y qué tipos de problemas piensa que generarían en el futuro si no se aplica el refactoring ahora.
+
+b) En el caso de que la implementación necesite la aplicación de refactoring, realice los cambios oportunos e indique las mejoras que aporta su implementación respecto a la original.
 
 ### Ejercicio 2
 
@@ -227,9 +256,11 @@ public class GroupOfUsers {
 
 #### Preguntas propuestas
 
-a) El software del ejercicio anterior ha evolucionado añadiendo nueva funcionalidad en su implementación. ¿Existe algún tipo de problema en esta versión de la implementación?, ¿es necesario aplicar refactoring en este caso?. En el caso de que existan problemas, detalle cuáles son y qué tipos de problemas generarían en el futuro si no se aplica el refactoring ahora.
+Responda a las siguientes cuestiones teniendo en cuenta la lista de los 10 posibles problemas incluida en el ejercicio anterior.
 
-b) En el caso de la implementación necesite la aplicación de refactoring, realice los cambios oportunos e indique las mejoras que aporta su implementación respecto a la original.
+a) El software del ejercicio anterior ha evolucionado añadiendo nueva funcionalidad en su implementación. ¿Existe algún tipo de problema en esta versión de la implementación de los que se incluyen en la lista?, ¿es necesario aplicar refactoring en este caso?. En el caso de que existan problemas, indique cuáles son y qué tipos de problemas piensa que generarían en el futuro si no se aplica el refactoring ahora.
+
+b) En el caso de que la implementación necesite la aplicación de refactoring, realice los cambios oportunos e indique las mejoras que aporta su implementación respecto a la original.
 
 ## Referencias
 [Libro Code Complete: A Practical Handbook of Software Construction, Second Edition]: https://www.amazon.es/Code-Complete-Practical-Handbook-Construction/dp/B00CNKPY6K/ref=sr_1_1?__mk_es_ES=ÅMÅŽÕÑ&dchild=1&keywords=code+complete+second+edition&qid=1584958289&sr=8-1
