@@ -2,29 +2,27 @@
 
 ## <span style="color:blue">Repaso de conceptos teóricos</span>
 
+Las dos técnicas siguientes, la inyección de dependencias y la programación de aspectos, nos permiten implementar el principio de ortogonalidad entre componentes software.
+
 ## Inyección de dependencias
 
-### Definición
-
-La inyección de dependencias es un patrón de diseño utilizado para implementar la inversión de control (IC, se invierte el flujo tradicional del programa). Por este motivo, permite la creación de objetos fuera de una clase y proporciona esos objetos a otra clase dependiente de ellos de diferentes formas. Utilizando la IC, se traslada la creación y unión de los objetos fuera de la clase que depende de ellos.
+La inyección de dependencias es una técnica utilizada para implementar la inversión de control (IC, se invierte el flujo tradicional del programa). Por este motivo, permite la creación de objetos fuera de una clase y proporciona esos objetos a otra clase dependiente de ellos de diferentes formas. Utilizando la IC, se traslada la creación y unión de los objetos fuera de la clase que depende de ellos.
 
 >![Modelo de inyección de dependencias](./figuras/inyeccionDependenciasModelo.png)
 >
-<small>por <cite>TutorialsTeacher, [Dependenccy Injection](https://www.tutorialsteacher.com/ioc/dependency-injection)</cite></small>
+<small>por <cite>TutorialsTeacher, [Dependency Injection](https://www.tutorialsteacher.com/ioc/dependency-injection)</cite></small>
 
 A continuación, se describen los tipos de inyección de dependencias existentes:
 
-- Inyección a través del constructor: En este tipo de inyección la clase inyectora suministra la dependencia (servicio) a través del constructor de la clase dependente (cliente).
+- Inyección a través del __constructor__: En este tipo de inyección la clase inyectora suministra la dependencia (servicio) a través del constructor de la clase dependente (cliente).
 
-- Inyección a través de propiedades: En este tipo de inyección la clase inyectora suministra la dependenca (servicio) a través de un método "set" de la clase dependiente (cliente).
+- Inyección a través de __propiedades__: En este tipo de inyección la clase inyectora suministra la dependenca (servicio) a través de un método "set" de la clase dependiente (cliente).
 
-- Inyección a través de métodos: En este tipo de inyección la clase inyectora suministra la dependencia (servicio) a través de un API establecido por la clase dependiente en el que se especifican el/los método/s para suministrar la dependencia (cliente).
+- Inyección a través de __métodos__: En este tipo de inyección la clase inyectora suministra la dependencia (servicio) a través de un API establecido por la clase dependiente en el que se especifican el/los método/s para suministrar la dependencia (cliente).
 
 Frameworks para facilitar la implementación de inyección de dependencias en Java: https://www.vogella.com/tutorials/DependencyInjection/article.html.
 
 ## Programación orientada a aspectos
-
-### Definición
 
 Los aspectos nos permiten agrupar código que se ejecutará en varios lugares en un módulo independiente. Además, este código será inyectado en tiempo de ejecución o compilación (dependiendo del framework) en los puntos de corte especificados en el código fuente. En este caso, la programación orientada a aspectos (AOP) permite introducir nueva funcionalidad dentro de una clase, sin que ésta deba tener conocimiento de su existencia.
 
@@ -44,8 +42,8 @@ Dado los siguientes fragmentos de código responder a las siguientes preguntas:
 
 ```java
 public interface DBAccess {
-	
-	public void initConnection();
+    
+    public void initConnection();
 
 }
 ```
@@ -54,12 +52,12 @@ public interface DBAccess {
 
 ```java
 public class DBAccessA implements DBAccess {
-	
-	public DBAccessA() {}
-	
-	public void initConnection() {
-		System.out.println("Init A connection with database..");
-	}
+    
+    public DBAccessA() {}
+    
+    public void initConnection() {
+        System.out.println("Init A connection with database..");
+    }
 
 }
 ```
@@ -68,12 +66,12 @@ public class DBAccessA implements DBAccess {
 
 ```java
 public class DBAccessB implements DBAccess {
-	
-	public DBAccessB() {}
-	
-	public void initConnection() {
-		System.out.println("Init B connection with database..");
-	}
+    
+    public DBAccessB() {}
+    
+    public void initConnection() {
+        System.out.println("Init B connection with database..");
+    }
 
 }
 ```
@@ -82,26 +80,26 @@ public class DBAccessB implements DBAccess {
 
 ```java
 public class DBClient {
-	
-	private DBAccess dbAccess;
-	
-	public DBClient(DBAccess dbAccess) {
-		this.dbAccess = dbAccess;
-	}
-	
-	public void setDBAccess(DBAccess dbAccess) {
-		this.dbAccess = dbAccess;
-	}
-	
-	public void getAllFromDataBase() {
-		dbAccess.initConnection();
-		System.out.println("Returning all data from database..");
-	}
-	
-	public void getSomeDataFromDataBase() {
-		dbAccess.initConnection();
-		System.out.println("Returning some data from database..");
-	}
+    
+    private DBAccess dbAccess;
+    
+    public DBClient(DBAccess dbAccess) {
+        this.dbAccess = dbAccess;
+    }
+    
+    public void setDBAccess(DBAccess dbAccess) {
+        this.dbAccess = dbAccess;
+    }
+    
+    public void getAllFromDataBase() {
+        dbAccess.initConnection();
+        System.out.println("Returning all data from database..");
+    }
+    
+    public void getSomeDataFromDataBase() {
+        dbAccess.initConnection();
+        System.out.println("Returning some data from database..");
+    }
 
 }
 ```
@@ -110,18 +108,18 @@ public class DBClient {
 
 ```java
 public class Main {
-	
-	public static void main(String args[]) {
-		DBAccess dbAccessB = new DBAccessB();
-		DBClient client = new DBClient(dbAccessB);
-		System.out.println("Querying all data from database..");
-		client.getAllFromDataBase();
-		
-		DBAccess dbAccessA = new DBAccessA();
-		client.setDBAccess(dbAccessA);
-		System.out.println("Querying some data from database..");
-		client.getSomeDataFromDataBase();
-	}
+    
+    public static void main(String args[]) {
+        DBAccess dbAccessB = new DBAccessB();
+        DBClient client = new DBClient(dbAccessB);
+        System.out.println("Querying all data from database..");
+        client.getAllFromDataBase();
+        
+        DBAccess dbAccessA = new DBAccessA();
+        client.setDBAccess(dbAccessA);
+        System.out.println("Querying some data from database..");
+        client.getSomeDataFromDataBase();
+    }
 
 }
 ```
@@ -144,24 +142,24 @@ Dado los siguientes fragmentos de código responder a las siguientes preguntas:
 
 ```java
 public class Bank {
-	
-	public Bank() {}
-	
-	public void createUser() {
-		System.out.println("Creating user..");
-	}
-	
-	public void makeTransaction() {
-		System.out.println("Making transaction..");
-	}
-	
-	public void takeMoneyOut() {
-		System.out.println("Taking money out..");
-	}
-	
-	public void showUsers() {
-		System.out.println("Showing users..");
-	}
+    
+    public Bank() {}
+    
+    public void createUser() {
+        System.out.println("Creating user..");
+    }
+    
+    public void makeTransaction() {
+        System.out.println("Making transaction..");
+    }
+    
+    public void takeMoneyOut() {
+        System.out.println("Taking money out..");
+    }
+    
+    public void showUsers() {
+        System.out.println("Showing users..");
+    }
 
 }
 ```
@@ -170,41 +168,41 @@ public class Bank {
 
 ```java
 public class Main {
-	
-	private static Scanner input = new Scanner(System.in);
+    
+    private static Scanner input = new Scanner(System.in);
 
-	public static void main(String args[]) {
-		
-		System.out.println("AspectJ Bank");
-		System.out.println("------------");
-		System.out.println("1 - Create user");
-		System.out.println("2 - Make transaction");
-		System.out.println("3 - Take money out");
-		System.out.println("4 - Show users");
-		System.out.println("5  - Exit");
-		
-		int option = Integer.valueOf(input.nextLine());
-		Bank bank = new Bank();
-		
-		switch(option) {
-		case 1:
-			bank.createUser();
-			break;
-		case 2:
-			bank.makeTransaction();
-			break;
-		case 3:
-			bank.takeMoneyOut();
-			break;
-		case 4:
-			bank.showUsers();
-			break;
-		case 5:
-			System.out.println("Exiting..");
-			break;
-		}
-	}
-	
+    public static void main(String args[]) {
+        
+        System.out.println("AspectJ Bank");
+        System.out.println("------------");
+        System.out.println("1 - Create user");
+        System.out.println("2 - Make transaction");
+        System.out.println("3 - Take money out");
+        System.out.println("4 - Show users");
+        System.out.println("5  - Exit");
+        
+        int option = Integer.valueOf(input.nextLine());
+        Bank bank = new Bank();
+        
+        switch(option) {
+        case 1:
+            bank.createUser();
+            break;
+        case 2:
+            bank.makeTransaction();
+            break;
+        case 3:
+            bank.takeMoneyOut();
+            break;
+        case 4:
+            bank.showUsers();
+            break;
+        case 5:
+            System.out.println("Exiting..");
+            break;
+        }
+    }
+    
 }
 ```
 
@@ -218,12 +216,12 @@ import org.aspectj.lang.annotation.Before;
 
 @Aspect
 public class LoginAspect {
-	@Before("..TO-DO..")
+    @Before("..TO-DO..")
     public void before(JoinPoint joinPoint){
         //...TO-DO..
     }
-	
-	@After("..TO-DO..")
+    
+    @After("..TO-DO..")
     public void after(JoinPoint joinPoint){
         //...TO-DO..
     }
