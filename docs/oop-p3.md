@@ -20,7 +20,11 @@ A continuación, se describen los tipos de inyección de dependencias existentes
 
 - Inyección a través de __métodos__: En este tipo de inyección la clase inyectora suministra la dependencia (servicio) a través de un API establecido por la clase dependiente en el que se especifican el/los método/s para suministrar la dependencia (cliente).
 
-Frameworks para facilitar la implementación de inyección de dependencias en Java: https://www.vogella.com/tutorials/DependencyInjection/article.html.
+A continuación, se listan algunos de los frameworks utilizados para facilitar la implementación de inyección de dependencias en Java:
+
+- Google guice: https://github.com/google/guice/wiki/GettingStarted.
+- Spring Framework: https://www.vogella.com/tutorials/SpringDependencyInjection/article.html.
+- Eclipse RCP: https://wiki.eclipse.org/Eclipse4/RCP/Dependency_Injection.
 
 ## Programación orientada a aspectos
 
@@ -30,7 +34,13 @@ Los aspectos nos permiten agrupar código que se ejecutará en varios lugares en
 > 
 > -- <cite>[Vangie Beal](https://www.webopedia.com/TERM/A/aspect_oriented_programming.html)</cite>
 
-AspectJ, framework para facilitar la implementación de inyección de dependencias en Java: https://www.eclipse.org/aspectj/doc/released/progguide/starting.html
+AspectJ, framework para facilitar la implementación de inyección de dependencias en Java:
+
+- Documentación oficial de AspectJ: https://www.eclipse.org/aspectj/docs.php
+- AspectJ Hello World: https://www.baeldung.com/aspectj
+- Cheat sheet para la definición de etiquetas en AspectJ: https://blog.espenberntsen.net/2010/03/20/aspectj-cheat-sheet/
+- Ejemplo de configuración de la etiqueta *Before* en AspectJ: https://howtodoinjava.com/spring-aop/aspectj-before-annotation-example/
+- Ejemplo de configuración de la etiqueta *After* en AspectJ: https://howtodoinjava.com/spring-aop/aspectj-after-annotation-example/
 
 ## <span style="color:blue">Ejercicios propuestos</span>
 
@@ -230,10 +240,51 @@ public class LoginAspect {
 
 #### Preguntas propuestas
 
-Complete en la clase "LoginAspect.java" las secciones "TO-DO" de forma que se cumplan las siguientes condiciones:
+En primer lugar, se tiene que configurar el entorno para realizar el ejercicio:
+
+- __Instalar Eclipse IDE for Java Developers__: https://www.eclipse.org/downloads/packages/release/2020-03/r/eclipse-ide-java-developers.
+- __Instalar el plug-in de Eclipse para trabajar con AspectJ__: Dentro de Eclipse seleccionar Help > Eclipse Marketplace > Buscar AspectJ Development Tools y hacer click en "Install".
+- __Descargar la plantilla del proyecto__: https://drive.google.com/file/d/1_L9cj0BTcqHZEnJK7aPZXplZiDaH9Ow3/view?usp=sharing.
+- __Importar el proyecto en Eclipse__: Descomprimir el zip descargado en el paso anterior (P3Ejercicio2_template.zip). Posteriormente, en Eclipse seleccionar File > Import > Projects from Folder or Archive > Click en "Directory" y seleccionar la ruta de la carpeta descomprimida > Click en "Finish".
+
+Posteriormente, complete en la clase "LoginAspect.java" las secciones "TO-DO" de forma que se cumplan las siguientes condiciones:
 
 a) Mostrar el mensaje "The login is required" antes de la ejecución de las operaciones "makeTransaction" y "takeMoneyOut".
 
 b) Mostrar el mensaje "The database is empty" después de la ejecución de la operación "showUsers".
 
-c) Sustituya el fichero "LoginAspect.java" por el fichero "LoginAspect.aj" incluyendo la misma funcionalidad utilizando la sintaxis de AspectJ.
+Finalmente, sustituya el fichero "LoginAspect.java" por el fichero "LoginAspect.aj" incluyendo la misma funcionalidad utilizando la sintaxis de AspectJ.
+
+## Referencias
+
+[Dependency Injection Tutorial]: https://www.tutorialsteacher.com/ioc/dependency-injection
+[[1] Blog Dependecy Injection.][Dependency Injection Tutorial]
+
+[Google Guice Framework]: https://github.com/google/guice/wiki/GettingStarted
+[[2] Google Guice Framework.][Google Guice Framework]
+
+[Spring Framework]: https://www.vogella.com/tutorials/SpringDependencyInjection/article.html
+[[3] Spring Framework.][Spring Framework]
+
+[Eclipse RCP]: https://wiki.eclipse.org/Eclipse4/RCP/Dependency_Injection
+[[4] Eclipse RCP.][Eclipse RCP]
+
+[AOP Blog]: https://www.webopedia.com/TERM/A/aspect_oriented_programming.html
+[[5] Blog Aspect-Oriented Programming.][AOP Blog]
+
+[AspectJ Documentación oficial]: https://www.eclipse.org/aspectj/docs.php
+[[6] AspectJ Documentación Oficial.][AspectJ Documentación oficial]
+
+[Intro to AspectJ]: https://www.baeldung.com/aspectj
+[[7] Blog Intro to AspectJ.][Intro to AspectJ]
+
+[Java and Spring Development]: https://blog.espenberntsen.net/2010/03/20/aspectj-cheat-sheet/
+[[8] Blog Java and Spring Development.][Java and Spring Development]
+
+[AspectJ Before annotation]: https://howtodoinjava.com/spring-aop/aspectj-before-annotation-example/
+[[9] Blog AspectJ Before Annotation.][AspectJ Before annotation]
+
+
+[AspectJ After annotation]: https://howtodoinjava.com/spring-aop/aspectj-after-annotation-example/
+[[10] Blog AspectJ After Annotation.][AspectJ After annotation]
+
