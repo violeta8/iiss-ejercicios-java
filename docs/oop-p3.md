@@ -1,4 +1,4 @@
-# Práctica 3
+# Práctica 3: Inyección de dependencias & Programación orientada a aspectos
 
 ## <span style="color:blue">Repaso de conceptos teóricos</span>
 
