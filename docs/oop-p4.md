@@ -1,4 +1,4 @@
-# Práctica 4: Aserciones
+# Práctica 4: Aserciones & Uso de Null & Optional
 
 ## <span style="color:blue">Repaso de conceptos teóricos</span>
 
@@ -65,6 +65,34 @@ Posteriormente, en la pestaña "Arguments" se deben añadir las opciones "-ea" e
 
 Finalmente, hacer click en el botón "Run" y el programa se ejecutará mostrando los errores existentes en las aserciones en el caso de que existan.
 
+## Uso de Null & Optional
+
+En [[3]][Articulo Uso Null] se describe algunas de las consecuencias del uso del valor *null* y los mecanismos que pueden ser utilizados para evitar su uso. En Java 8 se incorpora la clase "Optional", la cual puede ser utilizada también para evitar su uso.
+
+> Optional is a container object used to contain not-null objects. Optional object is used to represent null with absent value. This class has various utility methods to facilitate code to handle values as ‘available’ or ‘not available’ instead of checking null values. It is introduced in Java 8 and is similar to what Optional is in Guava.
+> -- <cite>[TutorialsPoint.com](https://www.tutorialspoint.com/java8/java8_optional_class.htm)</cite>
+
+A continuación, en el siguiente fragmento de código se muestra un ejemplo de uso indebido del valor *null*:
+
+```java
+Album album = getAlbum("Random Memory Access");
+if(album != null) {
+	return album;
+} else {
+	// Avisar al usuario de que no se ha encontrado el album
+}
+```
+Por otro lado, en el siguiente fragmento de código se realiza el uso de la clase "Optional". En este caso, se evita la comparación de la variable "album" con el valor *null*, y se utiliza el método "isPresent" en su lugar.
+
+```java
+Optional<Album> albumOptional = getAlbum("Random Memory Access");
+if(albumOptional.isPresent()) {
+    return albumOptional.get();
+} else {
+    // Avisar al usuario de que no se ha encontrado el album
+}
+```
+
 
 ## <span style="color:blue">Ejercicios propuestos</span>
 
@@ -86,7 +114,13 @@ public class Product {
 	
 	public Product(int code, String name, String category, double weight, double height) {
 		this.code = code;
-		this.name = name;
+
+		if(name == null) {
+			this.name = "";
+		} else {
+			this.name = name;
+		}
+
 		this.category = category;
 		this.weight = weight;
 		this.height = height;
@@ -175,7 +209,7 @@ public class Main {
 		Product product1 = new Product(1, "Product1", "Category1", -1.0, 2.0);
 		Product product2 = new Product(2, "Product2", "Category2", 5.0, -6.0);
 		Product product3 = new Product(3, "Product3", "", 5.0, 6.0);
-		Product product4 = new Product(4, "", "Category4", 5.0, 6.0);
+		Product product4 = new Product(4, null, "Category4", 5.0, 6.0);
 		Product product5 = new Product(4, "Product5", "Caregory5", 5.0, 6.0);
 		Product product6 = new Product(-6, "Product6", "Caregory6", 5.0, 6.0);
 		
@@ -227,6 +261,10 @@ Dado el código del ejercicio anterior implemente la función "removeProduct" en
 
 Además, al igual que en el ejercicio anterior, añada un mensaje de error descriptivo en cada una de las aserciones.
 
+### Ejercicio 3
+
+Dado el código del ejercicio anterior, ¿existe uso indebido del valor *null*?. En caso afirmativo, reemplace su uso por el de la clase "Optional" en los casos en los que sea necesario.
+
 ## Referencias
 
 [API Java]: https://docs.oracle.com/javase/8/docs/technotes/guides/language/assert.html
@@ -234,3 +272,6 @@ Además, al igual que en el ejercicio anterior, añada un mensaje de error descr
 
 [Libro Assertions]: https://cdn.ttgtmedia.com/searchDomino/downloads/CH07_0672326280.pdf
 [[2] Capítulo de libro Threads, Exceptions, and Assertions (java21days.com)][Libro Assertions]
+
+[Articulo Uso Null]: https://leanmind.es/es/blog/evitar-null-tambien-en-kotlin/
+[[3] Blog Null, un viejo enemigo del lado oscuro.][Articulo Uso Null]
