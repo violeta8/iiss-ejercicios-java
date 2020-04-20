@@ -103,7 +103,6 @@ Dado los siguientes fragmentos de código responder a las siguientes preguntas:
 #### Product.java
 
 ```java
-
 public class Product {
 	
 	private int code;
@@ -113,14 +112,27 @@ public class Product {
 	private double height;
 	
 	public Product(int code, String name, String category, double weight, double height) {
+		
+		assert code < 0 : "Code must to be greater than 0";
+		assert !name.isEmpty();
+		assert !category.isEmpty();
+		assert weight > 0;
+		assert height > 0;
+		
 		this.code = code;
-
+		
 		if(name == null) {
 			this.name = "";
 		} else {
 			this.name = name;
 		}
-
+		
+		if(category == null) {
+			this.category = "";
+		} else {
+			this.category = category;
+		}
+		
 		this.category = category;
 		this.weight = weight;
 		this.height = height;
@@ -162,7 +174,6 @@ public class Product {
 		return this.height;
 	}
 }
-
 ```
 
 ### ShoppingCart.java
@@ -186,6 +197,15 @@ public class ShoppingCart {
 		}
 	}
 	
+	public Product removeProduct(Product product) {
+		if(shoppingCart.containsKey(product)) {
+			shoppingCart.remove(product);
+			return product;
+		}  else {
+			return null;
+		}
+	}
+	
 	public void printShoppingCartContent() {
 		System.out.println("The shopping cart content is: ");
 		
@@ -194,13 +214,11 @@ public class ShoppingCart {
 		}
 		
 	}
-
 }
 ```
 ### Main.java
 
 ```java
-
 public class Main {
 	
 	public static void main(String args[]) {
@@ -208,7 +226,7 @@ public class Main {
 		
 		Product product1 = new Product(1, "Product1", "Category1", -1.0, 2.0);
 		Product product2 = new Product(2, "Product2", "Category2", 5.0, -6.0);
-		Product product3 = new Product(3, "Product3", "", 5.0, 6.0);
+		Product product3 = new Product(3, "Product3", null, 5.0, 6.0);
 		Product product4 = new Product(4, null, "Category4", 5.0, 6.0);
 		Product product5 = new Product(4, "Product5", "Caregory5", 5.0, 6.0);
 		Product product6 = new Product(-6, "Product6", "Caregory6", 5.0, 6.0);
@@ -221,9 +239,12 @@ public class Main {
 		shoppingCart.addProduct(product5, 3);
 		shoppingCart.addProduct(product6, 3);
 		
+		if(shoppingCart.removeProduct(product1) != null) {
+			System.out.println("The product has been successfully deleted.");
+		}
+		
 		shoppingCart.printShoppingCartContent();
 	}
-
 }
 ```
 
@@ -251,19 +272,11 @@ Además, añada un mensaje de error descriptivo en cada una de las aserciones qu
 b) En la clase "ShoppingCart.java":
 
 - No se puede añadir un producto con un número de unidades negativo o nulo.
+- No se puede eliminar un producto que no existe en el carrito.
 
 ### Ejercicio 2
 
-Dado el código del ejercicio anterior implemente la función "removeProduct" en la clase "ShoppingCart.java" permitiendo que cumplan las siguientes condiciones:
-
-- No se puede eliminar un producto que no existe en el carrito.
-- No se puede eliminar un producto con un número de unidades negativo o nulo.
-
-Además, al igual que en el ejercicio anterior, añada un mensaje de error descriptivo en cada una de las aserciones.
-
-### Ejercicio 3
-
-Dado el código del ejercicio anterior, ¿existe uso indebido del valor *null*?. En caso afirmativo, reemplace su uso por el de la clase "Optional" en los casos en los que sea necesario.
+Dado el código del primer ejercicio, ¿existe algún uso indebido del valor *null*?. En caso afirmativo, reemplace su uso por el de la clase "Optional" en los casos en los que sea necesario.
 
 ## Referencias
 
