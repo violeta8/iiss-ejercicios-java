@@ -113,12 +113,6 @@ public class Product {
 	
 	public Product(int code, String name, String category, double weight, double height) {
 		
-		assert code < 0 : "Code must to be greater than 0";
-		assert !name.isEmpty();
-		assert !category.isEmpty();
-		assert weight > 0;
-		assert height > 0;
-		
 		this.code = code;
 		
 		if(name == null) {
