@@ -250,8 +250,6 @@ a) En la clase "Product.java":
 
 - El valor del atributo *code* no puede ser un número negativo.
 
-- El valor del atributo *code* no puede estar repetido.
-
 - El valor del atributo *name* no puede estar vacío.
 
 - El valor del atributo *category* no puede estar vacío.
