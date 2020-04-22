@@ -248,17 +248,17 @@ Complete en las clases "Product.java" y "ShoppingCart.java" añadiendo asercione
 
 a) En la clase "Product.java":
 
-- El atributo *code* no puede ser un número negativo.
+- El valor del atributo *code* no puede ser un número negativo.
 
-- El atributo *code* no puede estar repetido.
+- El valor del atributo *code* no puede estar repetido.
 
-- El atributo *name* no puede estar vacío.
+- El valor del atributo *name* no puede estar vacío.
 
-- El atributo *category* no puede estar vacío.
+- El valor del atributo *category* no puede estar vacío.
 
-- El atributo *weight* no puede ser un número negativo.
+- El valor del atributo *weight* no puede ser un número negativo.
 
-- El atributo *height* no puede ser un número negativo.
+- El valor del atributo *height* no puede ser un número negativo.
 
 Además, añada un mensaje de error descriptivo en cada una de las aserciones que haya implementado.
 
