@@ -290,12 +290,12 @@ public class Main {
 ## Referencias
 
 [Funcion anonima]: https://en.wikipedia.org/wiki/Anonymous_function
-[[1] Definición de función anónima.][Funcion anonima]
+[[1] Definición en Wikipedia: Anonymous Function.][Funcion anonima]
 [Java 8 Stream Tutorial]: https://winterbe.com/posts/2014/07/31/java8-stream-tutorial-examples/
-[[2] Blog Java 8 Stream Tutorial.][Java 8 Stream Tutorial]
+[[2] Blog: Java 8 Stream Tutorial.][Java 8 Stream Tutorial]
 [API Java Streams]: https://www.oracle.com/technetwork/es/articles/java/procesamiento-streams-java-se-8-2763402-esa.html
-[[3] API Java Streams.][API Java Streams]
+[[3] Documentación Oficial Java: Procesamiento de datos con streams de Java SE 8.][API Java Streams]
 [API Java Funciones Lambda + Streams]: https://www.oracle.com/technetwork/es/articles/java/expresiones-lambda-api-stream-java-2737544-esa.html
-[[4] API Java Funciones Lambda + Streams.][API Java Funciones Lambda + Streams]
+[[4] Documentación Oficial Java: Introducción Expresiones Lambda y API Stream en Java SE 8.][API Java Funciones Lambda + Streams]
 [Closures in Java]: https://medium.com/@rmanavalan/5-ways-to-implement-closures-in-java-8-590790659ac5
-[[5] Blog Closures in Java.][Closures in Java]
+[[5] Blog: 5 ways to implement Closures in Java 8.][Closures in Java]
