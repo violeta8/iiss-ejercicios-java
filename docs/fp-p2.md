@@ -4,7 +4,7 @@
 
 ## Programación asíncrona en Java
 
-En Java 5 se añadió la interfaz `Future` para integrar la programación asíncrona. Pero, esta interfaz no proporcionaba la posibilidad de combinar los resultados obtenidos al aplicar diferentes operaciones o manejar los posibles errores. Por este motivo, en Java 8 se incluyó la clase `CompletableFuture`, junto a la interfaz `Future`, la cual implementa también la interfaz `CompletionStage`. Esta interfaz incluye el contrato de operaciones para incluir la combinación de resultados procedentes de diferentes operaciones. 
+En Java 5 se añadió la interfaz `Future` para integrar la programación asíncrona. Sin embargo, esta interfaz no proporcionaba la posibilidad de combinar los resultados obtenidos al aplicar diferentes operaciones o manejar los posibles errores. Por este motivo, en Java 8 se incluyó la clase `CompletableFuture`, junto a la interfaz `Future`, la cual implementa también la interfaz `CompletionStage`. Esta interfaz incluye el contrato de operaciones para incluir la combinación de resultados procedentes de diferentes operaciones. 
 
 En las secciones posteriores se verán algunos de los usos propuestos por esta interfaz en Java 8.
 
@@ -54,7 +54,7 @@ En primer lugar, en la función `main` se obtiene la variable `completableFuture
 
 ### Procesamiento de resultados asíncronos
 
-A continuación, se muestra un ejemplo del uso del resutado devuelto en un `CompletableFuture` desde otra variable del mismo tipo:
+A continuación, se muestra un ejemplo del uso del resultado devuelto en un `CompletableFuture` desde otra variable del mismo tipo:
 
 #### Main.java
 ```java
@@ -109,16 +109,16 @@ public class AsynchronousAPI {
 
 En este caso, la función `helloWorldAsync` realiza el mismo comportamiento que en el ejemplo anterior, únicamente con la diferencia de que devuelve `Hello` y no `Hello world` completo como en el ejemplo anterior. Por otro lado, en la función `main` se utilizan tres funciones de la clase `CompletableFuture`, a continuación se detalla el comportamiento de cada una de ellas:
 
-- `thenApply()`: La variable `future` espera el resultado de la resolución de la variable `completableFuture`, en este caso, espera un resultado de tipo `String`. Finalmente, concatena a ese resultado la palabra `world` y obtiene el valor completo de la cadena en su resolución, es decir `Hello world`.
+- `thenApply()`: La variable `future` espera el resultado de la resolución de la variable `completableFuture`. En este caso, espera un resultado de tipo `String`. Finalmente, concatena a ese resultado la palabra `world` y obtiene el valor completo de la cadena en su resolución, es decir, `Hello world`.
 
-- `thenAccept()`: La variable `futureVoid`espera el resultado de la resolución de la variable `completableFuture`, como en el caso anterior. La diferencia es que la variable `futureVoid` no podrá devolver un resultado de tipo `String` en su resolución, si no que será de tipo `Void`. Por este motivo, se lanzará directamente la función `System.out.println` en la resolución de la variable `futureVoid`.
+- `thenAccept()`: La variable `futureVoid`espera el resultado de la resolución de la variable `completableFuture`, como en el caso anterior. La diferencia es que la variable `futureVoid` no podrá devolver un resultado de tipo `String` en su resolución, sino que será de tipo `Void`. Por este motivo, se lanzará directamente la función `System.out.println` en la resolución de la variable `futureVoid`.
 
-- `thenRun()`: La variable `futureVoid` en este caso no espera ningún resultado, sólo espera la resolución de la variable `completableFuture`. Como en el caso anterior, la variable `futureVoid` lanzará directamente la función `System.out.println` en su resolución, pero no concatenará el resultado de la variable `completableFuture`, mostrando únicamente la palabra `world`.
+- `thenRun()`: La variable `futureVoid` en este caso no espera ningún resultado, sino que sólo espera la resolución de la variable `completableFuture`. Como en el caso anterior, la variable `futureVoid` lanzará directamente la función `System.out.println` en su resolución, pero no concatenará el resultado de la variable `completableFuture`, mostrando únicamente la palabra `world`.
 
 
 ### Combinación de Futures
 
-A continuación, se muestra varios fragmentos de código que ilustran la forma de combinar varios resultados procedentes de diferentes variables de tipo `CompletableFuture`:
+A continuación, se muestran varios fragmentos de código que ilustran la forma de combinar varios resultados procedentes de diferentes variables de tipo `CompletableFuture`:
 
 ```java
 CompletableFuture<String> completableFuture 
@@ -141,17 +141,17 @@ CompletableFuture future = CompletableFuture.supplyAsync(() -> "Hello")
     (s1, s2) -> System.out.println(s1 + s2));
 ```
 
-Tal y como en la sección anterior se utilizan tres funciones de la clase `CompletableFuture` para combinar los resultados, a continuación se detalla el comportamiento de cada una de ellas:
+En la sección anterior se utilizan tres funciones de la clase `CompletableFuture` para combinar los resultados. A continuación se detalla el comportamiento de cada una de ellas:
 
-- `thenCompose()`: Esta función permite "concatenar" el resultado de una variable `CompletableFuture` en otra una vez que haya finalizado su procesamiento. En este caso, la ejecución de los `CompletableFuture` no es independiente, si no que se encadenan de forma secuencial.
+- `thenCompose()`: Esta función permite "concatenar" el resultado de una variable `CompletableFuture` en otra una vez que haya finalizado su procesamiento. En este caso, la ejecución de los `CompletableFuture` no es independiente, sino que se encadenan de forma secuencial.
 
-- `thenCombine()`: Esta función permite ejecutar los `CompletableFuture` de forma independiente y posteriormente, combinar los resultados en la variable `CompletableFuture` resultante (future).
+- `thenCombine()`: Esta función permite ejecutar los `CompletableFuture` de forma independiente y, posteriormente, combinar los resultados en la variable `CompletableFuture` resultante (future).
 
-- `thenAcceptBoth()`: Esta función realiza el mismo procesamiento que `thenCombine()`, pero con la diferencia que la variable `CompletableFuture` resultante (future) es de tipo `Void` y realiza una acción, en este caso, invoca a la función `System.out.println`.
+- `thenAcceptBoth()`: Esta función realiza el mismo procesamiento que `thenCombine()`, pero con la diferencia que la variable `CompletableFuture` resultante (future) es de tipo `Void` y realiza una acción. En este caso, invoca a la función `System.out.println`.
 
 ### Ejecución de Futures en paralelo
 
-A continuación, se muestra un fragmento de código que ilustra la forma de combinar varios resultados procedentes de diferentes variables de tipo `CompletableFuture`, cómo en la sección anterior, pero realizando su procesamiento en paralelo:
+A continuación, se muestra un fragmento de código que ilustra la forma de combinar varios resultados procedentes de diferentes variables de tipo `CompletableFuture`, como en la sección anterior, pero realizando su procesamiento en paralelo:
 
 ```java
 CompletableFuture<String> future1  
@@ -169,7 +169,7 @@ CompletableFuture<Void> combinedFuture
 combinedFuture.get();
 ```
 
-En este caso, hay que tener en cuenta que el resultado de la función `allOf` de la clase `CompletableFuture` es de tipo `Void`, y por tanto, una limitación de este método es que no se pueden combinar los resultados de las variables `future1`,`future2` y `future3`.
+En este caso, hay que tener en cuenta que el resultado de la función `allOf` de la clase `CompletableFuture` es de tipo `Void` y, por tanto, una limitación de este método es que no se pueden combinar los resultados de las variables `future1`,`future2` y `future3`.
 
 No obstante, haciendo uso del API para Streams de Java 8 se puede solventar este problema:
 
@@ -183,7 +183,7 @@ String combined = Stream.of(future1, future2, future3)
 
 ### Ejercicio 1
 
-Dado los siguientes fragmentos de código responder a las siguientes preguntas:
+Dados los siguientes fragmentos de código, responder a las siguientes preguntas:
 
 #### AsynchronousAPI.java
 
@@ -229,7 +229,7 @@ public class Main {
 
 #### Preguntas propuestas
 
-1. Complete las secciones TO-DO de las clases AsynchronousAPI y Main, teniendo en cuenta:
+Complete las secciones TO-DO de las clases `AsynchronousAPI` y `Main`, teniendo en cuenta que:
 
 - El método `additionAsync` debe devolver la suma de todos los números contenidos en `elements`.
 - El método `additionAsync` debe mostrar por consola cada uno de los elementos que esta sumando con el mensaje `Adding (element)`.
@@ -283,22 +283,22 @@ public class Main {
 
 #### Preguntas propuestas
 
-1. Complete las secciones TO-DO de las clases AsynchronousAPI y Main, teniendo en cuenta:
+1. Complete las secciones TO-DO de las clases `AsynchronousAPI` y `Main`, teniendo en cuenta que:
 
 - El método `additionAsync` debe devolver la suma de todos los números contenidos en `elements`.
 - El método `additionAsync` debe mostrar por consola cada uno de los elementos que esta sumando con el mensaje `Adding (element)`.
 - El método `additionAsync` debe añadir un retardo de 2 segundos en la suma de cada elemento.
-- El método `additionAsync` debe devolver la producto de todos los números contenidos en `elements2`.
-- El método `additionAsync` debe mostrar por consola cada uno de los elementos que esta multiplicando con el mensaje `Multiplying (element)`.
-- El método `additionAsync` debe añadir un retardo de 3 segundos en el producto de cada elemento.
+- El método `multiplicationAsync` debe devolver la producto de todos los números contenidos en `elements2`.
+- El método `multiplicationAsync` debe mostrar por consola cada uno de los elementos que esta multiplicando con el mensaje `Multiplying (element)`.
+- El método `multiplicationAsync` debe añadir un retardo de 3 segundos en el producto de cada elemento.
 - En la función `main` se debe mostrar en consola el resultado de la suma completa con el mensaje `The result is (result)`. Este mensaje debe ser mostrado de forma directa cuando se complete el resultado de la variable `completableFuture`.
 
-2. Modifique el código de la clase Main para que el procesamiento se realice en paralelo y se obtenga el mismo resultado por consola que en el apartado anterior.
+2. Modifique el código de la clase `Main` para que el procesamiento se realice en paralelo y se obtenga el mismo resultado por consola que en el apartado anterior.
 
 ## Referencias
 
 [Guide to CompletableFuture]: https://www.baeldung.com/java-completablefuture
-[[1] Blog Guide to CompletableFuture.][Guide to CompletableFuture]
+[[1] Blog Guide to CompletableFuture][Guide to CompletableFuture]
 
 [API Java 8 CompletableFuture]: https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/CompletableFuture.html
-[[2] CompletableFuture API Java 8.][API Java 8 CompletableFuture]
+[[2] CompletableFuture API Java 8][API Java 8 CompletableFuture]
