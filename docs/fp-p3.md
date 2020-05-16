@@ -9,6 +9,7 @@
 Un *stream* representa una secuencia de elementos que soportan diferentes tipos de operaciones para realizar cálculos sobre ellos.
 
 Las posibles operaciones que se pueden realizar sobre un *stream* pueden ser _intermediarias_ o _terminales_.
+
 - Las operaciones intermediarias devuelven un nuevo *stream*, permitiendo encadenar múltiples operaciones intermediarias sin usar punto y coma.
 - Por otro lado, las operaciones terminales son nulas o devuelven un resultado de un tipo diferente, por ejemplo un tipo numérico.
 
@@ -20,7 +21,7 @@ En el ejemplo anterior, las operaciones `filter`, `map` y `sorted` son operacion
 
 Más información: https://www.oracle.com/technetwork/es/articles/java/procesamiento-streams-java-se-8-2763402-esa.html
 
-Por otro lado, se puede observar que la mayoría de las operaciones que se aplican sobre *streams* aceptan algún tipo de parámetro en forma de *expresión lambda*, que es una interfaz funcional que especifica el comportamiento exacto de la operación Estas operaciones no pueden modificar el contenido del *stream* original.
+Por otro lado, se puede observar que la mayoría de las operaciones que se aplican sobre *streams* aceptan algún tipo de parámetro en forma de *expresión lambda*, que es una interfaz funcional que especifica el comportamiento exacto de la operación. Estas operaciones no pueden modificar el contenido del *stream* original.
 
 En el ejemplo anterior, se puede observar que ninguna de las operaciones modifica la variable `myList` añadiendo o eliminando elementos, sino que sólo se realiza el filtrado de los elementos que no empiezan por "c", se transforman a mayúsculas, se ordenan en orden alfabético y se imprimen por pantalla.
 
@@ -34,7 +35,8 @@ ArrayList<Integer> mayores = (ArrayList<Integer>) Arrays
     .stream()
     .filter(x -> x > 5)
     .collect(
-       Collectors.toCollection(() -> new ArrayList<Integer>()));
+       Collectors.toCollection(() -> new ArrayList<Integer>())
+    );
 
 mayores.forEach(e -> System.out.println(e));
 ```
@@ -49,7 +51,7 @@ En el ejemplo anterior se realiza el filtrado de los números que sean mayores q
 5
 ```
 
-### Definición de operaciones disponibles en el API
+### Definición de operaciones disponibles en la API
 
 A continuación, se describen las operaciones disponibles en el Stream API haciendo la comparativa con las consultas realizadas en SQL:
 
@@ -62,6 +64,7 @@ Si se considera la siguiente consulta SQL:
 ```sql
 select name from products;
 ```
+
 El equivalente con Stream API sería:
 
 ```java
@@ -94,12 +97,12 @@ streams.forEach(product -> System.out.println(product));
 ```
 
 - Con el método `stream()` se obtiene la secuencia de elementos de tipo `Product`. Sería equivalente al `from` de SQL.
-- Con el método `filter` se recuperan únicamente los productos que cumplan la condición que se le pasa por parámetros. En este caso, los que su número de unidades sea mayor a 10. Sería equivalente al `where` de SQL.
+- Con el método `filter` se recuperan únicamente los productos que cumplan la condición que se le pasa como parámetro. En este caso, los que su número de unidades sea mayor a 10. Sería equivalente al `where` de SQL.
 - Con el método `map` se recupera únicamente el atributo `name`. Sería equivalente al `select` de SQL.
 
 #### Consultas con ordenación
 
-En este caso se desea listar los nombres de los producctos cuya existencia en el almaen sea menor a 10 unidades pero en orden ascendente, es decir, de menor existencia a mayor existencia.
+En este caso se desea listar los nombres de los productos cuya existencia en el almacén sea menor a 10 unidades pero en orden ascendente, es decir, de menor existencia a mayor existencia.
 
 Si se considera la siguiente consulta SQL:
 
@@ -115,12 +118,11 @@ Stream<String> streams = products.stream()
                 .filter(p -> p.getUnitsInStock() < 10)
                 .sorted(Comparator.comparingDouble(Product::getUnitsInStock))
                 .map(Product::getName);
-
 ```
 
 - Con el método `stream()` se obtiene la secuencia de elementos de tipo `Product`. Sería equivalente al `from` de SQL.
-- Con el método `filter` se recuperan únicamente los productos que cumplan la condición que se le pasa por parámetros. En este caso, los que su número de unidades sea mayor a 10. Sería equivalente al `where` de SQL.
-- Con el método `sorted` se recuperan los productos utilizando el método de ordenación que recibe por parámetros. En este caso, los recupera en orden ascendente comparando su número de unidades. Sería equivalente al `order by` de SQL.
+- Con el método `filter` se recuperan únicamente los productos que cumplan la condición que se le pasa como parámetro. En este caso, los que su número de unidades sea mayor a 10. Sería equivalente al `where` de SQL.
+- Con el método `sorted` se recuperan los productos utilizando el método de ordenación que recibe como parámetro. En este caso, los recupera en orden ascendente comparando su número de unidades. Sería equivalente al `order by` de SQL.
 - Con el método `map` se recupera únicamente el atributo `name`. Sería equivalente al `select` de SQL.
 
 #### Consultas con agrupación
@@ -130,25 +132,26 @@ En este caso se desea listar el número de productos agrupados por proveedor.
 Si se considera la siguiente consulta SQL:
 
 ```sql
-Select count(1), supplierID from products
-GROUP BY supplierID
+select count(1), supplierID from products
+group by supplierID
 ```
+
 El equivalente con Stream API sería:
 
 ```java
 Map<Integer, Long> collect = products.stream()
-        .collect( 
-                Collectors.groupingBy( 
-                        Product::getSupplier,
-                        Collectors.counting()
-                    )
-                );
+    .collect(
+        Collectors.groupingBy(
+            Product::getSupplier,
+            Collectors.counting()
+        )
+    );
 
 collect.forEach((s, c) -> System.out.printf("proveedor: %s: productos: %s \n", s,c));
 ```
 
 - Con el método `stream()` se obtiene la secuencia de elementos de tipo `Product`. Sería equivalente al `from` de SQL.
-- Con el método `collect` se realiza el agrupamiento a través de los criterios recibidos por parámetros. En este caso, los productos se agrupan por proveedor y se cuentan. Sería el equivalent a `group by` en SQL.
+- Con el método `collect` se realiza el agrupamiento a través de los criterios recibidos como parámetros. En este caso, los productos se agrupan por proveedor y se cuentan. Sería el equivalent a `group by` en SQL.
 
 #### Consultas con sumatorios
 
@@ -157,28 +160,28 @@ En este caso se desea obtener la suma del precio unitario de todos los productos
 Si se considera la siguiente consulta SQL:
 
 ```sql
-Select  unitsInStock, sum(unitPrice) from products
-GROUP BY unitsInStock;
+select  unitsInStock, sum(unitPrice) from products
+group by unitsInStock;
 ```
 
 El equivalente con Stream API sería:
 
 ```java
 Map<Integer, Double> collect = products.stream()
-        .collect( 
-                Collectors.groupingBy( 
-                        Product::getUnitsInStock,
-                        Collectors.summingDouble( 
-                                Product::getUnitPrice 
-                        )
+        .collect(
+            Collectors.groupingBy(
+                Product::getUnitsInStock,
+                Collectors.summingDouble(
+                    Product::getUnitPrice
                 )
+            )
         );
-        
+
 collect.forEach((stock, suma) -> System.out.printf("en stock: %s: suma: %s \n", stock,suma));
 ```
 
 - Con el método `stream()` se obtiene la secuencia de elementos de tipo `Product`. Sería equivalente al `from` de SQL.
-- Con el método `collect` se realiza el agrupamiento a través de los criterios recibidos por parámetros. En este caso, los productos se agrupan por número de unidades existentes en el almacen y se suman. Sería el equivalent a `group by` con el uso de `sum` en SQL.
+- Con el método `collect` se realiza el agrupamiento a través de los criterios recibidos como parámetros. En este caso, los productos se agrupan por número de unidades existentes en el almacen y se suman. Sería el equivalent a `group by` con el uso de `sum` en SQL.
 
 #### Consultas con filtrado sobre grupos
 
@@ -187,33 +190,33 @@ En este caso se desea obtener la suma del precio unitario de todos los productos
 Si se considera la siguiente consulta SQL:
 
 ```sql
-Select  unitsInStock, sum(unitPrice) from products
-GROUP BY unitsInStock
-HAVING sum(unitPrice) > 100;
+select  unitsInStock, sum(unitPrice) from products
+group by unitsInStock
+having sum(unitPrice) > 100;
 ```
 
 El equivalente con Stream API sería:
 
 ```java
 List<Map.Entry<Integer, Double>> entryList = products.stream()
-        .collect( 
-                Collectors.groupingBy( 
-                        Product::getUnitsInStock, 
-                        Collectors.summingDouble(
-                                Product::getUnitPrice
-                        )
-                )
-        ).entrySet()
-        .stream() 
-        .filter(p -> p.getValue() > 100) 
-        .collect(Collectors.toList());
+    .collect(
+        Collectors.groupingBy(
+            Product::getUnitsInStock,
+            Collectors.summingDouble(
+                Product::getUnitPrice
+            )
+        )
+    ).entrySet()
+    .stream()
+    .filter(p -> p.getValue() > 100)
+    .collect(Collectors.toList());
 
 entryList.forEach(list -> System.out.printf("en stock: %s, suma: %s\n",list.getKey(), list.getValue()));
 ```
 
 - Con el método `stream()` se obtiene la secuencia de elementos de tipo `Product`. Sería equivalente al `from` de SQL
-- Con el método `collect` se realiza el agrupamiento a través de los criterios recibidos por parámetros. En este caso, los productos se agrupan por número de unidades existentes en el almacen y se suman. Sería el equivalent a `group by` con el uso de `sum` en SQL.
-- Con el método `filter` se recuperan únicamente los productos que cumplan la condición que se le pasa por parámetros. En este caso, los que la suma sea mayor a 100. En este caso, sería equivalente al `having` de SQL porque va detrás de una operación con criterios de agrupación.
+- Con el método `collect` se realiza el agrupamiento a través de los criterios recibidos como parámetros. En este caso, los productos se agrupan por número de unidades existentes en el almacen y se suman. Sería el equivalent a `group by` con el uso de `sum` en SQL.
+- Con el método `filter` se recuperan únicamente los productos que cumplan la condición que se le pasa como parámetro. En este caso, los que la suma sea mayor a 100. En este caso, sería equivalente al `having` de SQL porque va detrás de una operación con criterios de agrupación.
 
 
 ## <span style="color:blue">Ejercicios propuestos</span>
@@ -226,34 +229,34 @@ Dados los siguientes fragmentos de código, responder a las siguientes preguntas
 
 ```java
 public class Employee {
-	
-	String name;
-	int age;
-	
-	public Employee(String name, int age) {
-		this.name = name;
-		this.age = age;
-	}
-	
-	public String getName() {
-		return name;
-	}
-	
-	public void setName(String name) {
-		this.name = name;
-	}
-	
-	public int getAge() {
-		return age;
-	}
-	
-	public void setAge(int age) {
-		this.age = age;
-	}
-	
-	public String toString() {
-		return "Name = " + name + ", Age = " + age;
-	}
+
+    String name;
+    int age;
+
+    public Employee(String name, int age) {
+        this.name = name;
+        this.age = age;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
+    public String toString() {
+        return "Name = " + name + ", Age = " + age;
+    }
 }
 ```
 
@@ -265,52 +268,52 @@ import java.util.Arrays;
 import java.util.List;
 
 public class EmployeeDatabase {
-	
-	private static List<Employee> employees = Arrays.asList(
-			new Employee("Employee1", 20),
-			new Employee("Employee2", 30),
-			new Employee("Employee3", 40),
-			new Employee("Employee4", 50));
-	
-	public static Employee getEmployeeByName(String name) {
-		Employee result = null;
-		for(Employee e: employees) {
-			if(e.getName().equals(name)) {
-				result = e;
-			}
-		}
-		return result;
-	}
-	
-	public static Employee getEmployeeByNameAndAge(String name, int age) {
-		Employee result = null;
-		for(Employee e: employees) {
-			if(e.getName().equals(name) && e.getAge() == age) {
-				result = e;
-			}
-		}
-		return result;
-	}
-	
-	public static List<Employee> getEmployeeByAgeOver(int limitAge) {
-		List<Employee> result = new ArrayList<Employee>();
-		for(Employee e: employees) {
-			if(e.getAge() > limitAge) {
-				result.add(e);
-			}
-		}
-		return result;
-	}
-	
-	public static List<Employee> getEmployeeByAgeUnder(int limitAge) {
-		List<Employee> result = new ArrayList<Employee>();
-		for(Employee e: employees) {
-			if(e.getAge() < limitAge) {
-				result.add(e);
-			}
-		}
-		return result;
-	}
+
+    private static List<Employee> employees = Arrays.asList(
+            new Employee("Employee1", 20),
+            new Employee("Employee2", 30),
+            new Employee("Employee3", 40),
+            new Employee("Employee4", 50));
+
+    public static Employee getEmployeeByName(String name) {
+        Employee result = null;
+        for(Employee e: employees) {
+            if(e.getName().equals(name)) {
+                result = e;
+            }
+        }
+        return result;
+    }
+
+    public static Employee getEmployeeByNameAndAge(String name, int age) {
+        Employee result = null;
+        for(Employee e: employees) {
+            if(e.getName().equals(name) && e.getAge() == age) {
+                result = e;
+            }
+        }
+        return result;
+    }
+
+    public static List<Employee> getEmployeeByAgeOver(int limitAge) {
+        List<Employee> result = new ArrayList<Employee>();
+        for(Employee e: employees) {
+            if(e.getAge() > limitAge) {
+                result.add(e);
+            }
+        }
+        return result;
+    }
+
+    public static List<Employee> getEmployeeByAgeUnder(int limitAge) {
+        List<Employee> result = new ArrayList<Employee>();
+        for(Employee e: employees) {
+            if(e.getAge() < limitAge) {
+                result.add(e);
+            }
+        }
+        return result;
+    }
 }
 ```
 
@@ -318,58 +321,56 @@ public class EmployeeDatabase {
 
 ```java
 public class Main {
-
-	public static void main(String args[]) {
-		System.out.println("Employee = " + EmployeeDatabase.getEmployeeByName("Employee1"));
-		System.out.println("Employee = " + EmployeeDatabase.getEmployeeByName("EmployeeNull"));
-		System.out.println("Employee = " + EmployeeDatabase.getEmployeeByNameAndAge("Employee2", 30));
-		System.out.println("Employee = " + EmployeeDatabase.getEmployeeByNameAndAge("Employee2", 20));
-		System.out.println("Employees = " + EmployeeDatabase.getEmployeeByAgeOver(30));
-		System.out.println("Employees = " + EmployeeDatabase.getEmployeeByAgeUnder(30));
-	}
+    public static void main(String args[]) {
+        System.out.println("Employee = " + EmployeeDatabase.getEmployeeByName("Employee1"));
+        System.out.println("Employee = " + EmployeeDatabase.getEmployeeByName("EmployeeNull"));
+        System.out.println("Employee = " + EmployeeDatabase.getEmployeeByNameAndAge("Employee2", 30));
+        System.out.println("Employee = " + EmployeeDatabase.getEmployeeByNameAndAge("Employee2", 20));
+        System.out.println("Employees = " + EmployeeDatabase.getEmployeeByAgeOver(30));
+        System.out.println("Employees = " + EmployeeDatabase.getEmployeeByAgeUnder(30));
+    }
 }
 ```
 
-1. Modifique las operaciones de la clase `EmployeeDatabase` utilizando las operaciones del API para Stream de Java 8.
-2. Extienda el API de la clase `EmployeeDatabase` añadiendo las siguientes operaciones:
+1. Modifique las operaciones de la clase `EmployeeDatabase` utilizando las operaciones de la API para Stream de Java 8.
+2. Extienda la API de la clase `EmployeeDatabase` añadiendo las siguientes operaciones:
 
-- Obtener los empleados cuya edad este comprendida entre un rango dado en la operación como parámetros (`maxAge` y `minAge`).
-- Obtener los empleados ordenados ascendentemente por su edad.
-- Obtener los empleados ordenados descendentemente por su edad.
-- Obtener el número de empleados que existen en la base de datos.
-- Obtener el número de empleados que existen en la base de datos y su nombre es igual a uno dado en la operación como parámetro.
+    - Obtener los empleados cuya edad este comprendida entre un rango dado en la operación como parámetros (`maxAge` y `minAge`).
+    - Obtener los empleados ordenados ascendentemente por su edad.
+    - Obtener los empleados ordenados descendentemente por su edad.
+    - Obtener el número de empleados que existen en la base de datos.
+    - Obtener el número de empleados que existen en la base de datos y su nombre es igual a uno dado en la operación como parámetro.
 
 ### Ejercicio 2
 
-Basandose en el código del ejercicio anterior implemente un API para una tienda de videojuegos, teniendo en cuenta lo siguiente:
+Basándose en el código del ejercicio anterior, implemente una API para una tienda de videojuegos, teniendo en cuenta lo siguiente:
 
 1. Implemente la clase `Videogame` contemplando los siguientes criterios:
 
-a) La clase contendrá los siguientes atributos:
+    a) La clase contendrá los siguientes atributos:
 
-- El título de tipo string.
-- La categoría de tipo string.
-- El precio de tipo double.
+    - El título de tipo string.
+    - La categoría de tipo string.
+    - El precio de tipo double.
 
-b) La clase contendrá las operaciones `set` y `get` necesarias para el acceso a los atributos anteriores.
+    b) La clase contendrá las operaciones `set` y `get` necesarias para el acceso a los atributos anteriores.
 
 2. Implemente la clase `VideogameDatabase` contemplando los siguientes criterios:
 
-a) La clase contendrá los siguientes atributos:
+    a) La clase contendrá los siguientes atributos:
 
-- La lista de videojuegos existentes de tipo `Videogame`.
+    - La lista de videojuegos existentes de tipo `Videogame`.
 
-b) La clase contendrá las siguientes operaciones implementadas con el Stream API de Java 8.
+    b) La clase contendrá las siguientes operaciones implementadas con el Stream API de Java 8:
 
-- Listar todos los títulos de los videojuegos.
-- Listar todos los títulos de los videojuegos cuyo precio sea superior a 20€.
-- Listar todos los títulos de los videojuegos cuya categoría sea terror.
-- Listar todos los títulos de los videojuegos cuyo precio sea superior a 20€ ordenados ascendentemente por el precio.
-- Listar todos los títulos de los videojuegos cuyo precio sea superior a 20€ ordenados descendentemente por el precio.
-- Obtener el número de videojuegos agrupados por categoría.
-- Obtener la suma de los precios de los videojuegos agrupados por categoría.
-- Obtener la suma de los precios de los videojuegos agrupados por cateogoría, siempre que el precio obtenido de la suma sea superior a 200€.
-
+    - Listar todos los títulos de los videojuegos.
+    - Listar todos los títulos de los videojuegos cuyo precio sea superior a 20€.
+    - Listar todos los títulos de los videojuegos cuya categoría sea terror.
+    - Listar todos los títulos de los videojuegos cuyo precio sea superior a 20€ ordenados ascendentemente por el precio.
+    - Listar todos los títulos de los videojuegos cuyo precio sea superior a 20€ ordenados descendentemente por el precio.
+    - Obtener el número de videojuegos agrupados por categoría.
+    - Obtener la suma de los precios de los videojuegos agrupados por categoría.
+    - Obtener la suma de los precios de los videojuegos agrupados por cateogoría, siempre que el precio obtenido de la suma sea superior a 200€.
 
 3. Implemente además un programa de prueba `Main` que ilustre el uso de las operaciones anteriores.
 
