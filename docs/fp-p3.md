@@ -44,11 +44,11 @@ mayores.forEach(e -> System.out.println(e));
 En el ejemplo anterior se realiza el filtrado de los números que sean mayores que 5 y, posteriormente, se imprimen por pantalla los elementos de la lista. Por lo tanto, la salida del programa por consola en este caso sería:
 
 ```
-1
-2
-3
-4
-5
+6
+7
+8
+9
+10
 ```
 
 ### Definición de operaciones disponibles en la API
