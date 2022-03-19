@@ -13,8 +13,8 @@ nav:
             - Práctica 3: fp-p3.md
 theme:
     name: 'material'
-    logo:
-        icon: "\uE80C"  
+#    logo:
+#        icon: "\uE80C"  
 markdown_extensions:
     - pymdownx.arithmatex
     - pymdownx.betterem:
@@ -49,5 +49,5 @@ repo_name: 'sistemas-sw/iiss-practicas-java'
 repo_url: 'https://github.com/sistemas-sw/iiss-practicas-java'
 extra:
     social:
-      - type: 'github'
+      - icon: fontawesome/brands/github-alt
         link: 'https://github.com/sistemas-sw'
