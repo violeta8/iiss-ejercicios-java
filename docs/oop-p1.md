@@ -1,6 +1,6 @@
 # Práctica 1: Herencia, composición y polimorfismo
 
-## <span style="color:blue">Repaso de conceptos teóricos</span>
+## Repaso de conceptos teóricos
 
 ## Herencia
 
