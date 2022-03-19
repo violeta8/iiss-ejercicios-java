@@ -1,4 +1,4 @@
-site_name: Prácticas de Implementación e Implantación de Sistemas Software
+site_name: Prácticas de Implementación en Java
 nav:
     - Home: index.md
     - Prácticas:
@@ -45,9 +45,9 @@ extra_javascript:
 extra:
     search:
         language: 'en, es'
-repo_name: 'TatyPerson/practicas-iiss'
-repo_url: 'https://github.com/TatyPerson/practicas-iiss'
+repo_name: 'sistemas-sw/iiss-practicas-java'
+repo_url: 'https://github.com/sistemas-sw/iiss-practicas-java'
 extra:
     social:
       - type: 'github'
-        link: 'https://github.com/TatyPerson'
+        link: 'https://github.com/sistemas-sw'
