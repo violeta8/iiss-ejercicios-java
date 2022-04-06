@@ -1,5 +1,4 @@
-# Práctica 3: Inyección de dependencias & AOP
-
+# Práctica 3: Inyección de dependencias & Aspectos
 
 ## Ejercicios propuestos
 
@@ -95,9 +94,8 @@ public class Main {
 
 #### Preguntas propuestas
 
-a) ¿Se realiza inyección de dependencias entre las clases anteriores?, si es así identifique la clase inyectora, el servicio y el cliente.
-
-b) En el caso de que exista inyección de dependencias además indique:
+1. ¿Se realiza inyección de dependencias entre las clases anteriores? Si es así, identifique la clase inyectora, el servicio y el cliente.
+2. En el caso de que exista inyección de dependencias, además indique:
 
 - El método de inyección que se realiza (constructor, propiedad o método).
 - La/s línea/s donde se realiza la inyección de dependencias.
@@ -199,58 +197,60 @@ public class LoginAspect {
 
 #### Preguntas propuestas
 
-En primer lugar, se tiene que configurar el entorno para realizar el ejercicio:
+Para realizar el ejercicio, se usará __maven__ como herramienta de construcción. Para editar el código fuente puede emplearse el entorno de desarrollo que se prefiera (vscode, etc.)
 
-- __Instalar Eclipse IDE for Java Developers__: https://www.eclipse.org/downloads/packages/release/2020-03/r/eclipse-ide-java-developers.
-- __Instalar el plug-in de Eclipse para trabajar con AspectJ__: Dentro de Eclipse seleccionar Help > Eclipse Marketplace > Buscar AspectJ Development Tools y hacer click en "Install".
-- __Descargar la plantilla del proyecto__: https://drive.google.com/file/d/1_L9cj0BTcqHZEnJK7aPZXplZiDaH9Ow3/view?usp=sharing.
-- __Importar el proyecto en Eclipse__: Descomprimir el zip descargado en el paso anterior (P3Ejercicio2_template.zip). Posteriormente, en Eclipse seleccionar File > Import > Projects from Folder or Archive > Click en "Directory" y seleccionar la ruta de la carpeta descomprimida > Click en "Finish".
+Puede emplear los siguientes comandos para compilar, limpiar y/o generar un fichero _jar_ con todas las dependencias necesarias, preparado para ejecutar:
 
-Posteriormente, complete en la clase `LoginAspect.java` las secciones "TO-DO" de forma que se cumplan las siguientes condiciones:
+- `mvn compile ` — compilar todo el código del proyecto
+
+- `mvn clean`  — limpiar el proyecto
+
+- `mvn assembly:single` — generar un jar con las dependencias
+
+- `mvn compile assembly:single` — compilar y generar el jar
+
+
+Para ejecutar, por ejemplo, una clase principal `Main` dentro del jar generado para el proyecto `ejercicio-aspectj` (según la configuración del `pom.xml` incluida en el proyecto), se puede usar el siguiente comando:
+
+```shel
+java -cp target/ejercicio-aspectj-0.0.1-SNAPSHOT-jar-with-dependencies.jar Main
+```
+
+El ejercicio está preparado para Java 1.8. Para versiones posteriores de Java 9, puede no funcionar. Para facilitar disponer de varias versiones de Java en la línea de comandos, se recomienda instalar [jEnv](https://www.jenv.be/) y seleccionar una versión del JDK compatible con Java 1.8
+
+Los pasos a completar son:
+
+1. Descargar la __plantilla del proyecto__ disponible en el Campus Virtual.
+
+2. Completar en la clase `LoginAspect.java` las secciones `TO-DO` de forma que se cumplan las siguientes condiciones:
 
 a) Mostrar el mensaje "The login is required" antes de la ejecución de las operaciones `makeTransaction` y `takeMoneyOut`.
 
 b) Mostrar el mensaje "The database is empty" después de la ejecución de la operación `showUsers`.
 
-Finalmente, sustituya el fichero `LoginAspect.java` por el fichero `LoginAspect.aj` incluyendo la misma funcionalidad utilizando la sintaxis de AspectJ.
+3. Finalmente, sustituir el fichero `LoginAspect.java` por el fichero `LoginAspect.aj` incluyendo la misma funcionalidad pero utilizando la sintaxis de AspectJ.
+
 
 ## Referencias
 
-AspectJ = framework para facilitar la implementación de inyección de dependencias en Java:
+### Herramientas de construcción
 
-- Documentación oficial de AspectJ: https://www.eclipse.org/aspectj/docs.php
-- AspectJ Hello World: https://www.baeldung.com/aspectj
-- Cheat sheet para la definición de etiquetas en AspectJ: https://blog.espenberntsen.net/2010/03/20/aspectj-cheat-sheet/
-- Ejemplo de configuración de la etiqueta *Before* en AspectJ: https://howtodoinjava.com/spring-aop/aspectj-before-annotation-example/
-- Ejemplo de configuración de la etiqueta *After* en AspectJ: https://howtodoinjava.com/spring-aop/aspectj-after-annotation-example/
+- [Configuración de las versiones de Java con jEnv](https://www.jenv.be/)
+- [Maven](https://maven.apache.org/)
 
+### Inyección de dependencias
 
-[Dependency Injection Tutorial]: https://www.tutorialsteacher.com/ioc/dependency-injection
-[[1] Blog Dependecy Injection.][Dependency Injection Tutorial]
+- [Dependency Injection Tutorial](https://www.tutorialsteacher.com/ioc/dependency-injection)
+- [Spring Framework](https://www.vogella.com/tutorials/SpringDependencyInjection/article.html)
+- [Google Guice Framework](https://github.com/google/guice/wiki/GettingStarted)
 
-[Google Guice Framework]: https://github.com/google/guice/wiki/GettingStarted
-[[2] Google Guice Framework.][Google Guice Framework]
+### Programación orientad a aspectos y AspectJ
 
-[Spring Framework]: https://www.vogella.com/tutorials/SpringDependencyInjection/article.html
-[[3] Spring Framework.][Spring Framework]
-
-[Eclipse RCP]: https://wiki.eclipse.org/Eclipse4/RCP/Dependency_Injection
-[[4] Eclipse RCP.][Eclipse RCP]
-
-[AOP Blog]: https://www.webopedia.com/TERM/A/aspect_oriented_programming.html
-[[5] Blog Aspect-Oriented Programming.][AOP Blog]
-
-[AspectJ Documentación oficial]: https://www.eclipse.org/aspectj/docs.php
-[[6] AspectJ Documentación Oficial.][AspectJ Documentación oficial]
-
-[Intro to AspectJ]: https://www.baeldung.com/aspectj
-[[7] Blog Intro to AspectJ.][Intro to AspectJ]
-
-[Java and Spring Development]: https://blog.espenberntsen.net/2010/03/20/aspectj-cheat-sheet/
-[[8] Blog Java and Spring Development.][Java and Spring Development]
-
-[AspectJ Before annotation]: https://howtodoinjava.com/spring-aop/aspectj-before-annotation-example/
-[[9] Blog AspectJ Before Annotation.][AspectJ Before annotation]
-
-[AspectJ After annotation]: https://howtodoinjava.com/spring-aop/aspectj-after-annotation-example/
-[[10] Blog AspectJ After Annotation.][AspectJ After annotation]
+- [AspectJ Hello World](https://www.baeldung.com/aspectj)
+- [Cheat sheet para la definición de etiquetas en AspectJ](https://blog.espenberntsen.net/2010/03/20/aspectj-cheat-sheet/)
+- [Ejemplo de configuración de la etiqueta Before en AspectJ](https://howtodoinjava.com/spring-aop/aspectj-before-annotation-example/)
+- [Ejemplo de configuración de la etiqueta After en AspectJ](https://howtodoinjava.com/spring-aop/aspectj-after-annotation-example/)
+- [Implementar una anotación a medida de Spring AOP](http://www.baeldung.com/spring-aop-annotation)
+- [AOP Blog](https://www.webopedia.com/TERM/A/aspect_oriented_programming.html)
+- [AspectJ Documentación oficial](https://www.eclipse.org/aspectj/docs.php)
+- [AspectJ en blog Java and Spring Development](https://blog.espenberntsen.net/2010/03/20/aspectj-cheat-sheet/)
