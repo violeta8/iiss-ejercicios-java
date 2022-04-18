@@ -1,6 +1,6 @@
-# Práctica 4: Aserciones & Uso de Null & Optional
+# Práctica 4: Tratamiento de errores
 
-## <span style="color:blue">Repaso de conceptos teóricos</span>
+## Repaso de conceptos teóricos
 
 ## Aserciones
 
@@ -22,7 +22,7 @@ assert price > 0;
 
 En este caso, la aserción comprueba que el valor del atributo *price* debe ser siempre mayor que 0, en el caso de que el valor sea 0 o inferior la aserción no se cumplirá. Esto permite comprobar que el programa esta realizando un funcionamiento correcto en este sentido.
 
-Como se ha comentado anteriormente, si la condición que sigue al keyword *assert* no se cumple el programa lanzará una excepción de tipo "AssertionError". Para que el mensaje de error asociado sea más descriptivo se puede especificar su contenido como se muestra a continuación:
+Si la condición que sigue al keyword *assert* no se cumple el programa lanzará una excepción de tipo "AssertionError". Para que el mensaje de error asociado sea más descriptivo se puede especificar su contenido como se muestra a continuación:
 
 ```java
 assert price > 0 : "El precio es menor que 0.";
@@ -30,14 +30,14 @@ assert price > 0 : "El precio es menor que 0.";
 
 Estas excepciones pueden ser capturadas, o en caso contrario el intérprete de Java se encargará de ellas y mostrará la excepción por consola. A continuación, se muestra un ejemplo del error generado cuando una aserción no se cumple:
 
-```java
+```text
 Exception in thread “main” java.lang.AssertionError
 at AssertTest.main(AssertTest.java:14)
 ```
 En el ejemplo anterior se muestra un error generado donde no se ha especificado ningún mensaje para que sea más descriptivo. A continuación, se muestra un error donde se ha especificado el mensaje:
 
 
-```java
+```text
 Exception in thread “main” java.lang.AssertionError: El precio es menor que 0.
 at AssertTest.main(AssertTest.java:14)
 ```
@@ -45,34 +45,14 @@ at AssertTest.main(AssertTest.java:14)
 Como se puede comprobar, la incorporación de mensajes aclaratorios es una buena práctica, ya que en el primer caso es díficil conocer el motivo de error del programa, a no ser que se visualice el contenido de la línea 14 del fichero "AssertTest.java".
 
 
-## Configuración de Eclipse para usar aserciones
+## Abuso de null & Optional
 
-Aunque las aserciones sean parte oficial del lenguaje Java, se debe configurar la ejecución del programa para que se muestren los errores asociados a éstas.
-
-En Eclipse se puede realizar esta opción haciendo click derecho sobre el proyecto: "Run as" > "Run configurations" > Click derecho sobre "Java application" > "New Configuration". A continuación, se abrirá la siguiente ventana de configuración:
-
->![RunConfigurations1](./figuras/asserts_RunConfigurations_1.png)
->
-<small><cite>Configuración de la clase principal del proyecto (main).</cite></small>
-
-En primer lugar, en la pestaña "Main se debe seleccionar la clase principal del proyecto, la cual será la clase que contenga el función "main", tal y como se muestra en la figura anterior.
-
->![RunConfigurations2](./figuras/asserts_RunConfigurations_2.png)
->
-<small><cite>Incorporación de argumentos en la ejecución para permitir usar aserciones.</cite></small>
-
-Posteriormente, en la pestaña "Arguments" se deben añadir las opciones "-ea" en "VM arguments", las cuales habilitarán el procesamiento de las aserciones en el proyecto.
-
-Finalmente, hacer click en el botón "Run" y el programa se ejecutará mostrando los errores existentes en las aserciones en el caso de que existan.
-
-## Uso de Null & Optional
-
-En [[3]][Articulo Uso Null] se describe algunas de las consecuencias del uso del valor *null* y los mecanismos que pueden ser utilizados para evitar su uso. En Java 8 se incorpora la clase "Optional", la cual puede ser utilizada también para evitar su uso.
+En [[3]][Articulo Uso Null] se describe algunas de las consecuencias del abuso del valor `null` y los mecanismos que pueden ser utilizados para evitar su uso. En Java 8 se incorpora la clase `Optional`, que puede usarse para evitar su abuso.
 
 > Optional is a container object used to contain not-null objects. Optional object is used to represent null with absent value. This class has various utility methods to facilitate code to handle values as ‘available’ or ‘not available’ instead of checking null values. It is introduced in Java 8 and is similar to what Optional is in Guava.
 > -- <cite>[TutorialsPoint.com](https://www.tutorialspoint.com/java8/java8_optional_class.htm)</cite>
 
-A continuación, en el siguiente fragmento de código se muestra un ejemplo de uso indebido del valor *null*:
+A continuación, en el siguiente fragmento de código se muestra un ejemplo de uso indebido del valor `null`:
 
 ```java
 Album album = getAlbum("Random Memory Access");
@@ -82,7 +62,7 @@ if(album != null) {
 	// Avisar al usuario de que no se ha encontrado el album
 }
 ```
-Por otro lado, en el siguiente fragmento de código se realiza el uso de la clase "Optional". En este caso, se evita la comparación de la variable "album" con el valor *null*, y se utiliza el método "isPresent" en su lugar.
+En el siguiente fragmento de código se usa la clase `Optional`. En este caso, se evita la comparación de la variable `album` con el valor `null`, y se utiliza el método `isPresent` en su lugar.
 
 ```java
 Optional<Album> albumOptional = getAlbum("Random Memory Access");
@@ -93,14 +73,13 @@ if(albumOptional.isPresent()) {
 }
 ```
 
-
-## <span style="color:blue">Ejercicios propuestos</span>
+## Ejercicios propuestos
 
 ### Ejercicio 1
 
-Dado los siguientes fragmentos de código responder a las siguientes preguntas:
+Dado los siguientes fragmentos de código, responder a las siguientes preguntas:
 
-#### Product.java
+#### `Product.java`
 
 ```java
 public class Product {
@@ -170,7 +149,7 @@ public class Product {
 }
 ```
 
-### ShoppingCart.java
+### `ShoppingCart.java`
 
 ```java
 import java.util.HashMap;
@@ -210,7 +189,8 @@ public class ShoppingCart {
 	}
 }
 ```
-### Main.java
+
+### `Main.java`
 
 ```java
 public class Main {
@@ -244,31 +224,26 @@ public class Main {
 
 #### Preguntas propuestas
 
-Complete en las clases "Product.java" y "ShoppingCart.java" añadiendo aserciones donde sea necesario que permitan que se cumplan las siguientes condiciones:
+Completar las clases `Product.java` y `ShoppingCart.java` añadiendo aserciones donde sea necesario que permitan que se cumplan las siguientes condiciones:
 
-a) En la clase "Product.java":
+a) En la clase `Product.java`:
 
-- El valor del atributo *code* no puede ser un número negativo.
+- El valor del atributo `code` no puede ser un número negativo.
+- El valor del atributo `name` no puede estar vacío.
+- El valor del atributo `category` no puede estar vacío.
+- El valor del atributo `weight` no puede ser un número negativo.
+- El valor del atributo `height` no puede ser un número negativo.
 
-- El valor del atributo *name* no puede estar vacío.
+Además, añadir un mensaje de error descriptivo en cada una de las aserciones que se hayan implementado.
 
-- El valor del atributo *category* no puede estar vacío.
-
-- El valor del atributo *weight* no puede ser un número negativo.
-
-- El valor del atributo *height* no puede ser un número negativo.
-
-Además, añada un mensaje de error descriptivo en cada una de las aserciones que haya implementado.
-
-
-b) En la clase "ShoppingCart.java":
+b) En la clase `ShoppingCart.java`:
 
 - No se puede añadir un producto con un número de unidades negativo o nulo.
 - No se puede eliminar un producto que no existe en el carrito.
 
 ### Ejercicio 2
 
-Dado el código del primer ejercicio, ¿existe algún uso indebido del valor *null*?. En caso afirmativo, reemplace su uso por el de la clase "Optional" en los casos en los que sea necesario.
+Dado el código del primer ejercicio, ¿existe algún uso indebido del valor `null`?. En caso afirmativo, reemplazar su uso por el de la clase `Optional` en los casos en los que sea necesario.
 
 ## Referencias
 
