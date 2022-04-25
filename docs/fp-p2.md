@@ -1,6 +1,6 @@
-# Práctica 2: Retrollamadas
+# Práctica 2: Retrollamadas y futuros
 
-## <span style="color:blue">Repaso de conceptos teóricos</span>
+## Repaso de conceptos teóricos
 
 ## Programación asíncrona en Java
 
@@ -8,12 +8,12 @@ En Java 5 se añadió la interfaz `Future` para integrar la programación asínc
 
 En las secciones posteriores se verán algunos de los usos propuestos por esta interfaz en Java 8.
 
-### CompletableFuture como (simple) Future
+### `CompletableFuture` como (simple) `Future`
 
 A continuación se muestra un ejemplo de uso de la clase `CompletableFuture`:
 
 
-#### Main.java
+#### `Main.java`
 ```java
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
@@ -27,7 +27,7 @@ public class Main {
 }
 ```
 
-#### AsynchronousAPI.java
+#### `AsynchronousAPI.java`
 ```java
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executors;
@@ -50,13 +50,19 @@ public class AsynchronousAPI {
 }
 ``` 
 
-En primer lugar, en la función `main` se obtiene la variable `completableFuture`, la cual es de tipo `Future<String>`, esta variable obtendrá su valor cuando la función `helloWorldAsync()` se resuelva. A tráves de la operación `completableFuture.get()` se obtiene el resultado de la función y posteriormente, se muestra en consola. Por otro lado, el comportamiento de la función `helloWorldAsync`se basa en el uso de la operación `submit()` de `Executors.newCachedThreadPool()`, la cual crea un nuevo hilo que se suspende durante 10 segundos para añadir un retardo temporal y posteriormente completa la operación con el valor `Hello world`. En este caso, cuando finalice el procesamiento del programa se mostrará por consola el mensaje `The result is Hello world`.
+En primer lugar, en la función `main` se obtiene la variable `completableFuture`, la cual es de tipo `Future<String>`, esta variable obtendrá su valor cuando la función `helloWorldAsync()` se resuelva.
+
+A tráves de la operación `completableFuture.get()` se obtiene el resultado de la función y, posteriormente, se muestra en consola.
+
+Por otro lado, el comportamiento de la función `helloWorldAsync`se basa en el uso de la operación `submit()` de `Executors.newCachedThreadPool()`, que crea un nuevo hilo que se suspende durante 10 segundos para añadir un retardo temporal y, posteriormente, completa la operación con el valor `Hello world`.
+
+En este caso, cuando finalice el procesamiento del programa se mostrará por consola el mensaje `The result is Hello world`.
 
 ### Procesamiento de resultados asíncronos
 
 A continuación, se muestra un ejemplo del uso del resultado devuelto en un `CompletableFuture` desde otra variable del mismo tipo:
 
-#### Main.java
+#### `Main.java`
 ```java
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
@@ -65,14 +71,17 @@ public class Main {
 	public static void main(String args[]) throws InterruptedException, ExecutionException {
 		
 		//Then apply
-		CompletableFuture<String> completableFuture = AsynchronousAPI.helloWorldAsync();
-		CompletableFuture<String> future = completableFuture.thenApply(s -> s + " world");
+		CompletableFuture<String> completableFuture =
+		   AsynchronousAPI.helloWorldAsync();
+		CompletableFuture<String> future =
+		   completableFuture.thenApply(s -> s + " world");
 		String result = future.get();
 		System.out.println(result);
 		
 		//Then accept
 		completableFuture = AsynchronousAPI.helloWorldAsync();
-		CompletableFuture<Void> futureVoid = completableFuture.thenAccept(s -> System.out.println(s + " world"));
+		CompletableFuture<Void> futureVoid =
+		   completableFuture.thenAccept(s -> System.out.println(s + " world"));
 		futureVoid.get();
 		
 		//Then run
@@ -83,7 +92,7 @@ public class Main {
 }
 ```
 
-#### AsynchronousAPI.java
+#### `AsynchronousAPI.java`
 ```java
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executors;
@@ -107,11 +116,13 @@ public class AsynchronousAPI {
 }
 ``` 
 
-En este caso, la función `helloWorldAsync` realiza el mismo comportamiento que en el ejemplo anterior, únicamente con la diferencia de que devuelve `Hello` y no `Hello world` completo como en el ejemplo anterior. Por otro lado, en la función `main` se utilizan tres funciones de la clase `CompletableFuture`, a continuación se detalla el comportamiento de cada una de ellas:
+En este caso, la función `helloWorldAsync` realiza el mismo comportamiento que en el ejemplo anterior, únicamente con la diferencia de que devuelve `Hello` y no `Hello world` completo.
+
+Por otro lado, en la función `main` se utilizan tres funciones de la clase `CompletableFuture`. A continuación se detalla el comportamiento de cada una de ellas:
 
 - `thenApply()`: La variable `future` espera el resultado de la resolución de la variable `completableFuture`. En este caso, espera un resultado de tipo `String`. Finalmente, concatena a ese resultado la palabra `world` y obtiene el valor completo de la cadena en su resolución, es decir, `Hello world`.
 
-- `thenAccept()`: La variable `futureVoid`espera el resultado de la resolución de la variable `completableFuture`, como en el caso anterior. La diferencia es que la variable `futureVoid` no podrá devolver un resultado de tipo `String` en su resolución, sino que será de tipo `Void`. Por este motivo, se lanzará directamente la función `System.out.println` en la resolución de la variable `futureVoid`.
+- `thenAccept()`: La variable `futureVoid` espera el resultado de la resolución de la variable `completableFuture`, como en el caso anterior. La diferencia es que la variable `futureVoid` no podrá devolver un resultado de tipo `String` en su resolución, sino que será de tipo `Void`. Por este motivo, se lanza directamente la función `System.out.println` en la resolución de la variable `futureVoid`.
 
 - `thenRun()`: La variable `futureVoid` en este caso no espera ningún resultado, sino que sólo espera la resolución de la variable `completableFuture`. Como en el caso anterior, la variable `futureVoid` lanzará directamente la función `System.out.println` en su resolución, pero no concatenará el resultado de la variable `completableFuture`, mostrando únicamente la palabra `world`.
 
@@ -126,28 +137,29 @@ CompletableFuture<String> completableFuture
     .thenCompose(s -> CompletableFuture.supplyAsync(() -> s + " World"));
 ```
 
-
 ```java
 CompletableFuture<String> completableFuture 
   = CompletableFuture.supplyAsync(() -> "Hello")
-    .thenCombine(CompletableFuture.supplyAsync(
-      () -> " World"), (s1, s2) -> s1 + s2));
+    .thenCombine(
+	  CompletableFuture.supplyAsync(() -> " World"),
+	  (s1, s2) -> s1 + s2)
+	);
 ```
-
 
 ```java
 CompletableFuture future = CompletableFuture.supplyAsync(() -> "Hello")
   .thenAcceptBoth(CompletableFuture.supplyAsync(() -> " World"),
-    (s1, s2) -> System.out.println(s1 + s2));
+    (s1, s2) -> System.out.println(s1 + s2)
+  );
 ```
 
 En la sección anterior se utilizan tres funciones de la clase `CompletableFuture` para combinar los resultados. A continuación se detalla el comportamiento de cada una de ellas:
 
-- `thenCompose()`: Esta función permite "concatenar" el resultado de una variable `CompletableFuture` en otra una vez que haya finalizado su procesamiento. En este caso, la ejecución de los `CompletableFuture` no es independiente, sino que se encadenan de forma secuencial.
+- `thenCompose()`: Esta función permite _concatenar_ el resultado de una variable `CompletableFuture` en otra una vez que haya finalizado su procesamiento. En este caso, la ejecución de los `CompletableFuture` no es independiente, sino que se encadenan de forma secuencial.
 
-- `thenCombine()`: Esta función permite ejecutar los `CompletableFuture` de forma independiente y, posteriormente, combinar los resultados en la variable `CompletableFuture` resultante (future).
+- `thenCombine()`: Esta función permite ejecutar los `CompletableFuture` de forma independiente y, posteriormente, combinar los resultados en la variable `CompletableFuture` resultante.
 
-- `thenAcceptBoth()`: Esta función realiza el mismo procesamiento que `thenCombine()`, pero con la diferencia que la variable `CompletableFuture` resultante (future) es de tipo `Void` y realiza una acción. En este caso, invoca a la función `System.out.println`.
+- `thenAcceptBoth()`: Esta función realiza el mismo procesamiento que `thenCombine()`, pero con la diferencia de que la variable `CompletableFuture` resultante (future) es de tipo `Void` y realiza una acción. En este caso, invoca a la función `System.out.println`.
 
 ### Ejecución de Futures en paralelo
 
@@ -169,7 +181,7 @@ CompletableFuture<Void> combinedFuture
 combinedFuture.get();
 ```
 
-En este caso, hay que tener en cuenta que el resultado de la función `allOf` de la clase `CompletableFuture` es de tipo `Void` y, por tanto, una limitación de este método es que no se pueden combinar los resultados de las variables `future1`,`future2` y `future3`.
+En este caso, hay que tener en cuenta que el resultado de la función `allOf` de la clase `CompletableFuture` es de tipo `Void` y, por tanto, una limitación de este método es que no se pueden combinar los resultados de las variables `future1`, `future2` y `future3`.
 
 No obstante, haciendo uso del API para Streams de Java 8 se puede solventar este problema:
 
@@ -179,13 +191,13 @@ String combined = Stream.of(future1, future2, future3)
   .collect(Collectors.joining(" "));
 ```
 
-## <span style="color:blue">Ejercicios propuestos</span>
+## Ejercicios propuestos
 
 ### Ejercicio 1
 
 Dados los siguientes fragmentos de código, responder a las siguientes preguntas:
 
-#### AsynchronousAPI.java
+#### `AsynchronousAPI.java`
 
 ```java
 import java.util.List;
@@ -208,7 +220,7 @@ public class AsynchronousAPI {
 }
 ```
 
-#### Main.java
+#### `Main.java`
 
 ```java
 import java.util.Arrays;
@@ -241,7 +253,7 @@ Complete las secciones TO-DO de las clases `AsynchronousAPI` y `Main`, teniendo 
 
 Dado los siguientes fragmentos de código responder a las siguientes preguntas:
 
-#### AsynchronousAPI.java
+#### `AsynchronousAPI.java`
 
 ```java
 import java.util.List;
@@ -261,7 +273,7 @@ public class AsynchronousAPI {
 }
 ```
 
-#### Main.java
+#### `Main.java`
 
 ```java
 import java.util.Arrays;

@@ -1,6 +1,6 @@
 # Práctica 3: Streams
 
-## <span style="color:blue">Repaso de conceptos teóricos</span>
+## Repaso de conceptos teóricos
 
 ## Stream API en Java
 
@@ -8,14 +8,25 @@
 
 Un *stream* representa una secuencia de elementos que soportan diferentes tipos de operaciones para realizar cálculos sobre ellos.
 
-Las posibles operaciones que se pueden realizar sobre un *stream* pueden ser _intermediarias_ o _terminales_.
+Las operaciones sobre un stream pueden ser intermediarias o terminales
 
-- Las operaciones intermediarias devuelven un nuevo *stream*, permitiendo encadenar múltiples operaciones intermediarias sin usar punto y coma.
-- Por otro lado, las operaciones terminales son nulas o devuelven un resultado de un tipo diferente, por ejemplo un tipo numérico.
+  - Las operaciones __intermediarias__ devuelven un nuevo stream permitiendo encadenar múltiples operaciones intermediarias sin usar punto y coma
+  - Las operaciones __terminales__ son nulas o devuelven un resultado de un tipo diferente, normalmente un valor agregado a partir de cómputos anteriores
 
->![streams en Java 8](./figuras/streamEjemplo.png)
->
-<small>por <cite>Benjamin, [Java 8 Stream Tutorial](https://winterbe.com/posts/2014/07/31/java8-stream-tutorial-examples/)</cite></small>
+```java
+public class Main{
+  public static void main(String []args){
+    List<String> myList =
+      Arrays.asList("a1", "a2", "b1", "c2", "c1");
+    myList
+      .stream()
+      .filter(s -> s.startsWith("c"))
+      .map(String::toUpperCase)
+      .sorted()
+      .forEach(System.out::println);      
+  }
+}
+```
 
 En el ejemplo anterior, las operaciones `filter`, `map` y `sorted` son operaciones intermediarias, mientras que la operación `forEach` es una operación terminal.
 
@@ -23,11 +34,9 @@ Más información: https://www.oracle.com/technetwork/es/articles/java/procesami
 
 Por otro lado, se puede observar que la mayoría de las operaciones que se aplican sobre *streams* aceptan algún tipo de parámetro en forma de *expresión lambda*, que es una interfaz funcional que especifica el comportamiento exacto de la operación. Estas operaciones no pueden modificar el contenido del *stream* original.
 
-En el ejemplo anterior, se puede observar que ninguna de las operaciones modifica la variable `myList` añadiendo o eliminando elementos, sino que sólo se realiza el filtrado de los elementos que no empiezan por "c", se transforman a mayúsculas, se ordenan en orden alfabético y se imprimen por pantalla.
+En el ejemplo anterior, se puede observar que ninguna de las operaciones modifica el estado de `myList` añadiendo o eliminando elementos, sino que sólo se filtran los elementos que empiezan por _c_, se transforman a mayúsculas, se ordenan (por defecto, alfabéticamente) y se imprimen por pantalla.
 
-Más información: https://www.oracle.com/technetwork/es/articles/java/expresiones-lambda-api-stream-java-2737544-esa.html
-
-Finalmente, se incluye otro ejemplo del uso del Stream API en Java:
+Otro ejemplo del uso del Stream API en Java:
 
 ```java
 ArrayList<Integer> mayores = (ArrayList<Integer>) Arrays
@@ -37,7 +46,6 @@ ArrayList<Integer> mayores = (ArrayList<Integer>) Arrays
     .collect(
        Collectors.toCollection(() -> new ArrayList<Integer>())
     );
-
 mayores.forEach(e -> System.out.println(e));
 ```
 
@@ -53,7 +61,7 @@ En el ejemplo anterior se realiza el filtrado de los números que sean mayores q
 
 ### Definición de operaciones disponibles en la API
 
-A continuación, se describen las operaciones disponibles en el Stream API haciendo la comparativa con las consultas realizadas en SQL:
+A continuación, se describen las operaciones disponibles en el Java Stream API, haciendo la comparativa con las consultas equivalentes si se realizaran en SQL:
 
 #### Consultas simples
 
@@ -65,14 +73,14 @@ Si se considera la siguiente consulta SQL:
 select name from products;
 ```
 
-El equivalente con Stream API sería:
+El equivalente con el Java Stream API sería:
 
 ```java
 List<Products> products;
 
 ...
 
-Stream<String> streams = products.stream().map(Product::getName);
+Stream<String> stream = products.stream().map(Product::getName);
 ```
 
 - Con el método `stream()` se obtiene la secuencia de elementos de tipo `Product`. Sería equivalente al `from` de SQL.
@@ -88,17 +96,24 @@ Si se considera la siguiente consulta SQL:
 select name from products where units_in_stock < 10;
 ```
 
-El equivalente con Stream API sería:
+El equivalente con el Java Stream API sería:
 
 ```java
-Stream<String> streams = products.stream().filter(p -> p.getUnitsInStock() < 10).map(Product::getName);
-
-streams.forEach(product -> System.out.println(product));
+Stream<String> stream = products.stream()
+        .filter(p -> p.getUnitsInStock() < 10)
+        .map(Product::getName);
 ```
 
 - Con el método `stream()` se obtiene la secuencia de elementos de tipo `Product`. Sería equivalente al `from` de SQL.
-- Con el método `filter` se recuperan únicamente los productos que cumplan la condición que se le pasa como parámetro. En este caso, los que su número de unidades sea mayor a 10. Sería equivalente al `where` de SQL.
+- Con el método `filter` se recuperan únicamente los productos que cumplan la condición que se le pasa como parámetro. En este caso, los que su número de unidades sea mayor que 10. Sería equivalente al `where` de SQL.
 - Con el método `map` se recupera únicamente el atributo `name`. Sería equivalente al `select` de SQL.
+
+Si además se quiere imprimir el resultado obtenido en `streams`:
+
+```java
+stream.forEach(product -> System.out.println(product));
+```
+
 
 #### Consultas con ordenación
 
@@ -111,18 +126,18 @@ select name from products where units_in_stock < 10
 order by units_in_stock asc;
 ```
 
-El equivalente con Stream API sería:
+El equivalente con Java Stream API sería:
 
 ```java
-Stream<String> streams = products.stream()
+Stream<String> stream = products.stream()
                 .filter(p -> p.getUnitsInStock() < 10)
                 .sorted(Comparator.comparingDouble(Product::getUnitsInStock))
                 .map(Product::getName);
 ```
 
 - Con el método `stream()` se obtiene la secuencia de elementos de tipo `Product`. Sería equivalente al `from` de SQL.
-- Con el método `filter` se recuperan únicamente los productos que cumplan la condición que se le pasa como parámetro. En este caso, los que su número de unidades sea mayor a 10. Sería equivalente al `where` de SQL.
-- Con el método `sorted` se recuperan los productos utilizando el método de ordenación que recibe como parámetro. En este caso, los recupera en orden ascendente comparando su número de unidades. Sería equivalente al `order by` de SQL.
+- Con el método `filter` se recuperan únicamente los productos que cumplan la condición que se le pasa como parámetro en forma de expresión lambda (En este caso, aquellos con un número de unidades mayor que 10). Sería equivalente al `where` de SQL.
+- Con el método `sorted` se recuperan los productos utilizando el método de ordenación que recibe como parámetro. En este caso, los recupera en orden ascendente por el número de unidades. Sería equivalente al `order by` de SQL.
 - Con el método `map` se recupera únicamente el atributo `name`. Sería equivalente al `select` de SQL.
 
 #### Consultas con agrupación
@@ -136,7 +151,7 @@ select count(1), supplierID from products
 group by supplierID
 ```
 
-El equivalente con Stream API sería:
+El equivalente con Java Stream API sería:
 
 ```java
 Map<Integer, Long> collect = products.stream()
@@ -160,22 +175,22 @@ En este caso se desea obtener la suma del precio unitario de todos los productos
 Si se considera la siguiente consulta SQL:
 
 ```sql
-select  unitsInStock, sum(unitPrice) from products
+select unitsInStock, sum(unitPrice) from products
 group by unitsInStock;
 ```
 
-El equivalente con Stream API sería:
-
+El equivalente con Java Stream API sería:
+å
 ```java
 Map<Integer, Double> collect = products.stream()
-        .collect(
-            Collectors.groupingBy(
-                Product::getUnitsInStock,
-                Collectors.summingDouble(
-                    Product::getUnitPrice
-                )
+    .collect(
+        Collectors.groupingBy(
+            Product::getUnitsInStock,
+            Collectors.summingDouble(
+                Product::getUnitPrice
             )
-        );
+        )
+    );
 
 collect.forEach((stock, suma) -> System.out.printf("en stock: %s: suma: %s \n", stock,suma));
 ```
@@ -185,7 +200,7 @@ collect.forEach((stock, suma) -> System.out.printf("en stock: %s: suma: %s \n", 
 
 #### Consultas con filtrado sobre grupos
 
-En este caso se desea obtener la suma del precio unitario de todos los productos agrupados por su número de existencias en el almacen, pero solo obtener aquellos productos cuya suma sea mayor a 100.
+En este caso se desea obtener la suma del precio unitario de todos los productos agrupados por su número de existencias en el almacen, pero solo obtener aquellos productos cuya suma sea mayor que 100.
 
 Si se considera la siguiente consulta SQL:
 
@@ -216,16 +231,16 @@ entryList.forEach(list -> System.out.printf("en stock: %s, suma: %s\n",list.getK
 
 - Con el método `stream()` se obtiene la secuencia de elementos de tipo `Product`. Sería equivalente al `from` de SQL
 - Con el método `collect` se realiza el agrupamiento a través de los criterios recibidos como parámetros. En este caso, los productos se agrupan por número de unidades existentes en el almacen y se suman. Sería el equivalent a `group by` con el uso de `sum` en SQL.
-- Con el método `filter` se recuperan únicamente los productos que cumplan la condición que se le pasa como parámetro. En este caso, los que la suma sea mayor a 100. En este caso, sería equivalente al `having` de SQL porque va detrás de una operación con criterios de agrupación.
+- Con el método `filter` se recuperan únicamente los productos que cumplan la condición que se le pasa como parámetro. En este caso, los que la suma sea mayor que 100. En este caso, sería equivalente al `having` de SQL porque va detrás de una operación con criterios de agrupación.
 
 
-## <span style="color:blue">Ejercicios propuestos</span>
+## Ejercicios propuestos
 
 ### Ejercicio 1
 
 Dados los siguientes fragmentos de código, responder a las siguientes preguntas:
 
-#### Employee.java
+#### `Employee.java`
 
 ```java
 public class Employee {
@@ -260,7 +275,7 @@ public class Employee {
 }
 ```
 
-#### EmployeeDatabase.java
+#### `EmployeeDatabase.java`
 
 ```java
 import java.util.ArrayList;
@@ -317,17 +332,23 @@ public class EmployeeDatabase {
 }
 ```
 
-#### Main.java
+#### `Main.java`
 
 ```java
 public class Main {
     public static void main(String args[]) {
-        System.out.println("Employee = " + EmployeeDatabase.getEmployeeByName("Employee1"));
-        System.out.println("Employee = " + EmployeeDatabase.getEmployeeByName("EmployeeNull"));
-        System.out.println("Employee = " + EmployeeDatabase.getEmployeeByNameAndAge("Employee2", 30));
-        System.out.println("Employee = " + EmployeeDatabase.getEmployeeByNameAndAge("Employee2", 20));
-        System.out.println("Employees = " + EmployeeDatabase.getEmployeeByAgeOver(30));
-        System.out.println("Employees = " + EmployeeDatabase.getEmployeeByAgeUnder(30));
+        System.out.println("Employee = " +
+          EmployeeDatabase.getEmployeeByName("Employee1"));
+        System.out.println("Employee = " +
+          EmployeeDatabase.getEmployeeByName("EmployeeNull"));
+        System.out.println("Employee = " +
+          EmployeeDatabase.getEmployeeByNameAndAge("Employee2", 30));
+        System.out.println("Employee = " +
+          EmployeeDatabase.getEmployeeByNameAndAge("Employee2", 20));
+        System.out.println("Employees = " +
+          EmployeeDatabase.getEmployeeByAgeOver(30));
+        System.out.println("Employees = " +
+          EmployeeDatabase.getEmployeeByAgeUnder(30));
     }
 }
 ```
@@ -349,8 +370,8 @@ Basándose en el código del ejercicio anterior, implemente una API para una tie
 
     a) La clase contendrá los siguientes atributos:
 
-    - El título de tipo string.
-    - La categoría de tipo string.
+    - El título de tipo String.
+    - La categoría de tipo String.
     - El precio de tipo double.
 
     b) La clase contendrá las operaciones `set` y `get` necesarias para el acceso a los atributos anteriores.
