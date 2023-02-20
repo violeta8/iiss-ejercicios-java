@@ -109,8 +109,8 @@ public class Main{
 
 - Las operaciones que se aplican sobre un _stream_ aceptan algún parámetro en forma de interfaz funcional o expresión lambda
 
-    - Una __interfaz funcional__ es un objeto cuyo tipo (clase) representa a una función ejecutable con un cierto número de parámetros (normalmente 0, 1 o 2)
-    - Una __expresión lambda__ es una interfaz funcional anónima, que especifica el comportamiento de la operación, pero sin especificar formalmente su nombre y tipo de parámetros
+  - Una __interfaz funcional__ es un objeto cuyo tipo (clase) representa a una función ejecutable con un cierto número de parámetros (normalmente 0, 1 o 2)
+  - Una __expresión lambda__ es una interfaz funcional anónima, que especifica el comportamiento de la operación, pero sin especificar formalmente su nombre y tipo de parámetros
 
 - Las operaciones aplicadas no pueden modificar el _estado_ del stream original 
 
@@ -152,7 +152,6 @@ En el ejemplo anterior, se puede observar que:
 - Oracle: [Procesamiento de datos con streams de Java](https://www.oracle.com/lad/technical-resources/articles/java/processing-streams-java-se8.html) 
 - Oracle: [Introducción a Expresiones Lambda y API Stream en Java](https://www.oracle.com/lad/technical-resources/articles/java/expresiones-lambda-api-stream-java-part2.html)
 
-
 ## Ejercicios propuestos
 
 ### Ejercicio 1
@@ -163,30 +162,30 @@ Dado los siguientes fragmentos de código, responder a las siguientes preguntas:
 
 ```java
 public class GroupOfUsers {
-	
-	private static Map<String, Integer> usersWithPoints =
-	  new HashMap<String, Integer>() {{
-	    put("User1", 800);
-	    put("User2", 550);
-	    put("User3", 20);
-	    put("User4", 300);
-	}};
-	
-	public List<String> getUsers() {
-		List<String> users = new ArrayList<String>();
-		
-		//Sorting users by points
-		usersWithPoints.entrySet()
-		.stream()
-		.sorted(Map.Entry.<String, Integer>comparingByValue().reversed())
-		.forEachOrdered(x -> users.add(x.getKey()));
-		
-		//Capitalizing the names of the users
-		List<String> usersCapitalized = new ArrayList<String>();
-		users.forEach(x -> usersCapitalized.add(x.toUpperCase()));
-		
-		return usersCapitalized;
-	}
+ 
+    private static Map<String, Integer> usersWithPoints =
+      new HashMap<String, Integer>() {{
+        put("User1", 800);
+        put("User2", 550);
+        put("User3", 20);
+        put("User4", 300);
+    }};
+    
+    public List<String> getUsers() {
+        List<String> users = new ArrayList<String>();
+        
+        //Sorting users by points
+        usersWithPoints.entrySet()
+        .stream()
+        .sorted(Map.Entry.<String, Integer>comparingByValue().reversed())
+        .forEachOrdered(x -> users.add(x.getKey()));
+        
+        //Capitalizing the names of the users
+        List<String> usersCapitalized = new ArrayList<String>();
+        users.forEach(x -> usersCapitalized.add(x.toUpperCase()));
+        
+        return usersCapitalized;
+ }
 
 }
 ```
@@ -194,11 +193,11 @@ public class GroupOfUsers {
 #### `Main.java`
 
 ```java
-	...
-	GroupOfUsers group = new GroupOfUsers();
-	List<String> users = group.getUsers();
-	System.out.println("The users are: " + users);
-	...
+    ...
+    GroupOfUsers group = new GroupOfUsers();
+    List<String> users = group.getUsers();
+    System.out.println("The users are: " + users);
+    ...
 ```
 
 #### Preguntas propuestas
@@ -228,69 +227,69 @@ Dado los siguientes fragmentos de código, responder a las siguientes preguntas:
 
 ```java
 public class GroupOfUsers {
-	
-	private static Map<String, Integer> usersWithPoints_Group1 =
-	  new HashMap<String, Integer>() {{
-	    put("User1", 800);
-	    put("User2", 550);
-	    put("User3", 20);
-	    put("User4", 300);
-	}};
-	
-	private static Map<String, Integer> usersWithPoints_Group2 =
-	  new HashMap<String, Integer>() {{
-	    put("User1", 10);
-	    put("User2", 990);
-	    put("User3", 760);
-	    put("User4", 230);
-	}};
-	
-	private static Map<String, Integer> usersWithPoints_Group3 =
-	  new HashMap<String, Integer>() {{
-	    put("User1", 1000);
-	    put("User2", 200);
-	    put("User3", 5);
-	    put("User4", 780);
-	}};
-	
-	public List<ArrayList<String>> getUsers() {
-		List<String> users1 = new ArrayList<String>();
-		List<String> users2 = new ArrayList<String>();
-		List<String> users3 = new ArrayList<String>();
-		List<ArrayList<String>> users = new ArrayList<ArrayList<String>>();
-		
-		//Sorting users by points
-		usersWithPoints_Group1.entrySet()
-		.stream()
-		.sorted(Map.Entry.<String, Integer>comparingByValue().reversed())
-		.forEachOrdered(x -> users1.add(x.getKey()));
-		
-		usersWithPoints_Group2.entrySet()
-		.stream()
-		.sorted(Map.Entry.<String, Integer>comparingByValue().reversed())
-		.forEachOrdered(x -> users2.add(x.getKey()));
-		
-		usersWithPoints_Group3.entrySet()
-		.stream()
-		.sorted(Map.Entry.<String, Integer>comparingByValue().reversed())
-		.forEachOrdered(x -> users3.add(x.getKey()));
-		
-		//Capitalizing the names of the users
-		List<String> usersCapitalized1 = new ArrayList<String>();
-		List<String> usersCapitalized2 = new ArrayList<String>();
-		List<String> usersCapitalized3 = new ArrayList<String>();
-		
-		users1.forEach(x -> usersCapitalized1.add(x.toUpperCase()));
-		users2.forEach(x -> usersCapitalized2.add(x.toUpperCase()));
-		users3.forEach(x -> usersCapitalized3.add(x.toUpperCase()));
-		
-		//Adding users to the main list
-		users.add((ArrayList<String>)usersCapitalized1);
-		users.add((ArrayList<String>)usersCapitalized2);
-		users.add((ArrayList<String>)usersCapitalized3);
-		
-		return users;
-	}
+    
+    private static Map<String, Integer> usersWithPoints_Group1 =
+      new HashMap<String, Integer>() {{
+        put("User1", 800);
+        put("User2", 550);
+        put("User3", 20);
+        put("User4", 300);
+    }};
+    
+    private static Map<String, Integer> usersWithPoints_Group2 =
+      new HashMap<String, Integer>() {{
+        put("User1", 10);
+        put("User2", 990);
+        put("User3", 760);
+        put("User4", 230);
+    }};
+    
+    private static Map<String, Integer> usersWithPoints_Group3 =
+      new HashMap<String, Integer>() {{
+        put("User1", 1000);
+        put("User2", 200);
+        put("User3", 5);
+        put("User4", 780);
+    }};
+    
+    public List<ArrayList<String>> getUsers() {
+        List<String> users1 = new ArrayList<String>();
+        List<String> users2 = new ArrayList<String>();
+        List<String> users3 = new ArrayList<String>();
+        List<ArrayList<String>> users = new ArrayList<ArrayList<String>>();
+        
+        //Sorting users by points
+        usersWithPoints_Group1.entrySet()
+        .stream()
+        .sorted(Map.Entry.<String, Integer>comparingByValue().reversed())
+        .forEachOrdered(x -> users1.add(x.getKey()));
+        
+        usersWithPoints_Group2.entrySet()
+        .stream()
+        .sorted(Map.Entry.<String, Integer>comparingByValue().reversed())
+        .forEachOrdered(x -> users2.add(x.getKey()));
+        
+        usersWithPoints_Group3.entrySet()
+        .stream()
+        .sorted(Map.Entry.<String, Integer>comparingByValue().reversed())
+        .forEachOrdered(x -> users3.add(x.getKey()));
+        
+        //Capitalizing the names of the users
+        List<String> usersCapitalized1 = new ArrayList<String>();
+        List<String> usersCapitalized2 = new ArrayList<String>();
+        List<String> usersCapitalized3 = new ArrayList<String>();
+        
+        users1.forEach(x -> usersCapitalized1.add(x.toUpperCase()));
+        users2.forEach(x -> usersCapitalized2.add(x.toUpperCase()));
+        users3.forEach(x -> usersCapitalized3.add(x.toUpperCase()));
+        
+        //Adding users to the main list
+        users.add((ArrayList<String>)usersCapitalized1);
+        users.add((ArrayList<String>)usersCapitalized2);
+        users.add((ArrayList<String>)usersCapitalized3);
+        
+        return users;
+    }
 
 }
 ```
@@ -298,11 +297,11 @@ public class GroupOfUsers {
 #### `Main.java`
 
 ```java
-	...
-	GroupOfUsers group = new GroupOfUsers();
-	List<ArrayList<String>> users = group.getUsers();
-	System.out.println("The users are: " + users);
-	...
+    ...
+    GroupOfUsers group = new GroupOfUsers();
+    List<ArrayList<String>> users = group.getUsers();
+    System.out.println("The users are: " + users);
+    ...
 ```
 
 #### Preguntas propuestas
@@ -315,8 +314,5 @@ b) En el caso de que la implementación necesite la aplicación de refactoring, 
 
 ## Referencias
 
-[Code Complete]: https://www.amazon.es/Code-Complete-Practical-Handbook-Construction/dp/B00CNKPY6K/ref=sr_1_1?__mk_es_ES=ÅMÅŽÕÑ&dchild=1&keywords=code+complete+second+edition&qid=1584958289&sr=8-1
+[Code Complete]: https://www.amazon.es/Code-Complete-Practical-Costruction-Professional/dp/0735619670
 \[1\] [Code Complete: A Practical Handbook of Software Construction, Second Edition.][Code Complete]
-
-
-
