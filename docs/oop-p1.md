@@ -45,9 +45,46 @@ public class ElementsSet<E> extends HashSet<E> {
 
 #### Preguntas propuestas
 
-a) ¿Es el uso de la herencia adecuado para la implementación de la clase `ElementsSet`? ¿Qué salida muestra la función `System.out.println` al invocar el método `getNumberOfAddedElements`, 3 o 6?
+a) ¿Es el uso de la herencia adecuado para la implementación de la clase `ElementsSet`? ¿Qué salida muestra la función `System.out.println` al invocar el método `getNumberOfAddedElements`, 3 o 6? \
+El uso de la herencia para implementar la clase ElementsSet es adecuado porque ElementsSet es una extensión de la clase HashSet en Java. Al extender HashSet, ElementsSet hereda todos los métodos y campos públicos de la clase HashSet. Respecto a la salida la invocación del método 'getNumberOfAddedElements' es 6.
+
 
 b) En el caso de que haya algún problema en la implementación anterior, proponga una solución alternativa usando composición/delegación que resuelva el problema.
+```java
+public class ElementsSet<E> {
+     //Número de elementos insertados utilizando el método "add" 
+    private int numberOfAddedElements = 0;
+    
+    //Delega el objeto para encargarse de las operaciones del set
+    private HashSet<E> delegateSet = new HashSet<>();
+
+    public ElementsSet() {}
+
+    public boolean add(E element) {
+        numberOfAddedElements++; //Contando el elemento agregado
+        return delegateSet.add(element);
+    } 
+
+    public boolean addAll(Collection<? extends E> elements) {
+        numberOfAddedElements += elements.size(); //Contando los elementos agregados
+        return delegateSet.addAll(elements);
+    } 
+
+    public int getNumberOfAddedElements() {
+        return numberOfAddedElements;
+    }
+
+    //Delegate all other set operations to the HashSet object
+    public int size() {
+        return delegateSet.size();
+    }
+
+    public boolean isEmpty() {
+        return delegateSet.isEmpty();
+    }
+
+}
+```
 
 ### Ejercicio 2
 
@@ -129,6 +166,70 @@ public class Dog extends Animal {
 
 #### Preguntas propuestas
 
-a) ¿Es correcto el uso de herencia en la implementación de las clases `Cat` y `Dog`? ¿Qué beneficios se obtienen?
+a) ¿Es correcto el uso de herencia en la implementación de las clases `Cat` y `Dog`? ¿Qué beneficios se obtienen?\
+En este ejemplo faltaría el constructor en cada clase para el numero de patas de cada animal, por tanto el uso de éste estaría incorrecto pero si que es verdad que al usar herencia, se pueden definir características y comportamientos generales en una clase más general (Animal) y luego extender esas características y comportamientos en subclases más específicas (Cat y Dog). Esto permite una mayor modularidad y flexibilidad en el diseño de nuestro código, ya que podemos agregar fácilmente nuevas subclases (como Bird o Fish) que también extienden la clase Animal y proporcionan su propia implementación de los métodos abstractos.
 
-b) En el caso de que el uso de la herencia no sea correcto, proponga una solución alternativa. ¿Cuáles son los beneficios de la solución propuesta frente a la original?
+
+b) En el caso de que el uso de la herencia no sea correcto, proponga una solución alternativa. ¿Cuáles son los beneficios de la solución propuesta frente a la original?\
+La solucion sería:
+
+```java
+public class Animal {
+    //Number of legs the animal holds
+    protected int numberOfLegs = 0;
+
+    public Animal(int legs)
+    {
+        numberOfLegs=n;
+    }
+    public abstract String speak();
+    public abstract boolean eat(String typeOfFeed);
+    public  int getNumberOfLegs(int n){ return legs; }
+}
+```
+```java
+public class Dog extends Animal {
+    @Override
+    public String speak() {
+        return "Woof";
+    }
+
+    @Override
+    public boolean eat(String typeOfFeed) {
+        if(typeOfFeed.equals("meat")) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    @Override
+    public int getNumberOfLegs(int n) {
+        return n;
+    }
+}
+```
+Para el caso de cat.java: 
+
+```java
+public class Cat extends Animal {
+    @Override
+    public String speak() {
+        return "Meow";
+    }
+
+    @Override
+    public boolean eat(String typeOfFeed) {
+        if(typeOfFeed.equals("fish")) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+   @Override
+    public int getNumberOfLegs(int n) {
+        return n;
+    }
+}
+```

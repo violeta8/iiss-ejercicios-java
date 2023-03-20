@@ -217,8 +217,41 @@ En la siguiente lista se incluyen 10 posibles problemas que pueden encontrarse e
 
 a) ¿Existe algún tipo de problema en la implementación anterior de los que se incluye en la lista anterior? ¿Es necesario aplicar refactoring en este caso? En el caso de que existan problemas, indique cuáles son y qué tipos de problemas piensa que generarían en el futuro si no se aplica el refactoring ahora.
 
-b) En el caso de que la implementación necesite la aplicación de refactoring, realice los cambios oportunos e indique las mejoras que aporta su implementación respecto a la original.
+Funciones con nombre que no especifica de forma clara su objetivo: el nombre de la función getUsers no especifica claramente qué es lo que hace la función. Sería mejor cambiar el nombre de la función a algo más claro, como getUsersSortedAndCapitalizedByPoints.
 
+
+Funciones con demasiada responsabilidad: la función getUsers hace dos cosas distintas: ordenar los usuarios por puntos y luego capitalizar sus nombres. Sería mejor dividir esta función en dos funciones más pequeñas, cada una con una única responsabilidad.
+
+
+Se usan variables globales: la variable usersWithPoints es una variable global, lo que puede dificultar la comprensión de cómo se utiliza en la función getUsers. Sería mejor pasar esta variable como parámetro a la función getUsers.
+
+
+Los cambios dentro de una clase tienden a afectar a otras clases: si se quisiera cambiar la forma en que se ordenan los usuarios (por ejemplo, si se quisiera ordenarlos por orden alfabético en lugar de por puntos), esto afectaría a la función getUsers y posiblemente también a otras funciones que utilicen la variable usersWithPoints. Sería mejor encapsular la lógica de ordenamiento en una función separada para que los cambios no afecten a otras partes del código.
+
+
+En general, estos problemas podrían dificultar el mantenimiento y la evolución del código en el futuro. Por lo tanto, sería recomendable aplicar refactoring para abordar estos problemas y hacer el código más fácil de entender y mantener.
+
+b) En el caso de que la implementación necesite la aplicación de refactoring, realice los cambios oportunos e indique las mejoras que aporta su implementación respecto a la original.
+```java
+public class GroupOfUsers {
+ 
+    public List<String> getUsersSortedAndCapitalizedByPoints(Map<String, Integer> usersWithPoints) {
+        List<String> users = new ArrayList<String>();
+        
+        //Sorting users by points
+        usersWithPoints.entrySet()
+        .stream()
+        .sorted(Map.Entry.<String, Integer>comparingByValue().reversed())
+        .forEachOrdered(x -> users.add(x.getKey()));
+        
+        //Capitalizing the names of the users
+        List<String> usersCapitalized = new ArrayList<String>();
+        users.forEach(x -> usersCapitalized.add(x.toUpperCase()));
+        
+        return usersCapitalized;
+    }
+}
+```
 ### Ejercicio 2
 
 Dado los siguientes fragmentos de código, responder a las siguientes preguntas:
@@ -310,7 +343,13 @@ Responda a las siguientes cuestiones, teniendo en cuenta la lista de los 10 posi
 
 a) El software del ejercicio anterior ha evolucionado añadiendo nueva funcionalidad en su implementación. ¿Existe algún tipo de problema en esta versión de la implementación de los que se incluyen en la lista? ¿Es necesario aplicar refactoring en este caso? En el caso de que existan problemas, indique cuáles son y qué tipos de problemas piensa que generarían en el futuro si no se aplica el refactoring ahora.
 
+En este código se repiten los mismos problemas que en el ejercicio anterior, y además se añade la duplicación de muchas líneas de código. Esto hace que el tiempo de ejecución y la memoria utilizada aumenten, y se multiplican por el número de líneas duplicadas. En resumen, se están cometiendo errores que pueden afectar negativamente al rendimiento y la escalabilidad del código.
+
 b) En el caso de que la implementación necesite la aplicación de refactoring, realice los cambios oportunos e indique las mejoras que aporta su implementación respecto a la original.
+
+En este caso, el código se encuentra en el archivo "PJava2E2.java". Se ha reducido el uso de memoria eliminando lo que no es necesario, y se ha creado una lista para almacenar los resultados de las funciones lambda. Además, todas las operaciones necesarias para obtener los resultados se han realizado en una sola función lambda para cada uno de los grupos existentes. En resumen, se ha mejorado la eficiencia y la organización del código.
+
+
 
 ## Referencias
 
