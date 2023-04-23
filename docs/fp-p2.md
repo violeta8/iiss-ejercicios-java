@@ -248,6 +248,55 @@ Complete las secciones TO-DO de las clases `AsynchronousAPI` y `Main`, teniendo 
 - El método `additionAsync` debe añadir un retardo de 5 segundos en la suma de cada elemento.
 - En la función `main` se debe mostrar en consola el resultado de la suma completa con el mensaje `The result is (result)`.
 
+## Respuestas Ejercicio 1
+### `AsynchronousAPI.java`
+```java	
+import java.util.List;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+
+public class AsynchronousAPI {
+	
+	public static Future<Integer> additionAsync(List<Integer> elements) throws InterruptedException {
+	    CompletableFuture<Integer> completableFuture = new CompletableFuture<>();
+	 
+	    Executors.newCachedThreadPool().submit(() -> {
+	        int sum = 0;
+	        for(int element : elements) {
+	            System.out.println("Adding " + element);
+	            try {
+	                Thread.sleep(5000); // Espera de 5 segundos
+	            } catch (InterruptedException e) {
+	                completableFuture.completeExceptionally(e);
+	            }
+	            sum += element;
+	        }
+	        completableFuture.complete(sum);
+	    });
+	 
+	    return completableFuture;
+	}
+}
+```
+### `Main.java`
+```java
+import java.util.Arrays;
+import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
+
+public class Main {
+	
+	public static void main(String args[]) throws InterruptedException, ExecutionException {
+		List<Integer> elements = Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+		Future<Integer> completableFuture = AsynchronousAPI.additionAsync(elements);
+		Integer result = completableFuture.get();
+		System.out.println("The result is " + result);
+	}
+}
+```
+
 
 ### Ejercicio 2
 
@@ -293,6 +342,7 @@ public class Main {
 }
 ```
 
+
 #### Preguntas propuestas
 
 1. Complete las secciones TO-DO de las clases `AsynchronousAPI` y `Main`, teniendo en cuenta que:
@@ -306,6 +356,89 @@ public class Main {
 - En la función `main` se debe mostrar en consola el resultado de la suma completa con el mensaje `The result is (result)`. Este mensaje debe ser mostrado de forma directa cuando se complete el resultado de la variable `completableFuture`.
 
 2. Modifique el código de la clase `Main` para que el procesamiento se realice en paralelo y se obtenga el mismo resultado por consola que en el apartado anterior.
+
+## Respuestas Ejercicio 2
+1. En este caso, se utilizan los métodos `supplyAsync` de la clase `CompletableFuture` para realizar la suma y la multiplicación en hilos separados. Estos métodos toman como argumento un objeto `Supplier` que define el trabajo que se debe realizar. En ambos casos, se utiliza un bucle para recorrer la lista de elementos, mostrando por consola el mensaje correspondiente y esperando el tiempo indicado. La suma y la multiplicación se realizan en variables separadas que se combinan al final en la función `thenRun` del objeto CompletableFuture resultante.
+
+### `AsynchronousAPI.java`
+```java
+import java.util.List;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Executors;
+import java.util.stream.Collectors;
+
+public class AsynchronousAPI {
+    
+    public static CompletableFuture<Integer> additionAsync(List<Integer> elements) {
+        return CompletableFuture.supplyAsync(() -> {
+            int result = 0;
+            for (int element : elements) {
+                System.out.println("Adding " + element);
+                try {
+                    Thread.sleep(2000); // Esperar 2 segundos
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                    throw new RuntimeException(e);
+                }
+                result += element;
+            }
+            return result;
+        });
+    }
+    
+    public static CompletableFuture<Integer> multiplicationAsync(List<Integer> elements) {
+        return CompletableFuture.supplyAsync(() -> {
+            int result = 1;
+            for (int element : elements) {
+                System.out.println("Multiplying " + element);
+                try {
+                    Thread.sleep(3000); // Esperar 3 segundos
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                    throw new RuntimeException(e);
+                }
+                result *= element;
+            }
+            return result;
+        });
+    }
+
+}
+```
+2. En la función main, se crea un objeto `CompletableFuture<Void>` que agrupa las dos tareas individuales (future1 y future2) usando el método `allOf`. Luego, se define una función que se ejecutará cuando todas las tareas hayan terminado `(thenRun)` y que mostrará el resultado de la suma total. Por último, se espera a que se completen todas las tareas con el método `get`. 
+### `Main.java`
+```java
+import java.util.Arrays;
+import java.util.List;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
+
+public class Main {
+    
+    public static void main(String args[]) throws InterruptedException, ExecutionException {
+        List<Integer> elements1 = Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+        List<Integer> elements2 = Arrays.asList(11, 12, 13, 14, 15, 16, 17, 18, 19, 20);
+
+        CompletableFuture<Integer> future1 = AsynchronousAPI.additionAsync(elements1);
+        CompletableFuture<Integer> future2 = AsynchronousAPI.multiplicationAsync(elements2);
+
+        CompletableFuture<Void> completableFuture = CompletableFuture.allOf(future1, future2);
+
+        completableFuture.thenRun(() -> {
+            try {
+                int result1 = future1.get();
+                int result2 = future2.get();
+                System.out.println("The result is " + (result1 + result2));
+            } catch (InterruptedException | ExecutionException e) {
+                e.printStackTrace();
+            }
+        });
+
+        completableFuture.get(); // Esperar a que todas las tareas se completen
+    }
+    
+}
+```
 
 ## Referencias
 

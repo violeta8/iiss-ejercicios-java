@@ -362,6 +362,87 @@ public class Main {
     - Obtener el número de empleados que existen en la base de datos.
     - Obtener el número de empleados que existen en la base de datos y su nombre es igual a uno dado en la operación como parámetro.
 
+## Respuestas Ejercicio 1
+1. En esta versión, utilizamos los métodos `stream()`, `filter()`, `findFirst()`, `orElse()` y `toList()` para realizar las mismas operaciones que antes, pero de una manera más concisa y elegante.
+### `EmployeeDatabase.java`
+```java
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+public class EmployeeDatabase {
+
+    private static List<Employee> employees = Arrays.asList(
+            new Employee("Employee1", 20),
+            new Employee("Employee2", 30),
+            new Employee("Employee3", 40),
+            new Employee("Employee4", 50));
+
+    public static Employee getEmployeeByName(String name) {
+        return employees.stream().filter(e -> e.getName().equals(name)).findFirst().orElse(null);
+    }
+
+    public static Employee getEmployeeByNameAndAge(String name, int age) {
+        return employees.stream().filter(e -> e.getName().equals(name) && e.getAge() == age).findFirst().orElse(null);
+    }
+
+    public static List<Employee> getEmployeeByAgeOver(int limitAge) {
+        return employees.stream().filter(e -> e.getAge() > limitAge).toList();
+    }
+
+    public static List<Employee> getEmployeeByAgeUnder(int limitAge) {
+        return employees.stream().filter(e -> e.getAge() < limitAge).toList();  
+    }
+}
+```
+2. 
+### `EmployeeDatabase.java`
+```java
+public class EmployeeDatabase {
+    private static List<Employee> employees = Arrays.asList(
+        new Employee("Employee1", 20),
+        new Employee("Employee2", 30),
+        new Employee("Employee3", 40),
+        new Employee("Employee4", 50));
+
+    public static Employee getEmployeeByName(String name) {
+        return employees.stream().filter(e -> e.getName().equals(name)).findFirst().orElse(null);
+    }
+
+    public static Employee getEmployeeByNameAndAge(String name, int age) {
+        return employees.stream().filter(e -> e.getName().equals(name) && e.getAge() == age).findFirst().orElse(null);
+    }
+
+    public static List<Employee> getEmployeeByAgeOver(int limitAge) {
+        return employees.stream().filter(e -> e.getAge() > limitAge).toList();
+    }
+
+    public static List<Employee> getEmployeeByAgeUnder(int limitAge) {
+        return employees.stream().filter(e -> e.getAge() < limitAge).toList();
+    }
+
+    public static List<Employee> getEmployeeByAgeRange(int minAge, int maxAge) {
+        return employees.stream().filter(e -> e.getAge() >= minAge && e.getAge() <= maxAge).toList();
+    }
+
+    public static List<Employee> getEmployeesSortedAscByAge() {
+        return employees.stream().sorted(Comparator.comparingInt(Employee::getAge)).collect(Collectors.toList());
+    }
+
+    public static List<Employee> getEmployeesSortedDescByAge() {
+        return employees.stream().sorted(Comparator.comparingInt(Employee::getAge).reversed()).collect(Collectors.toList());
+    }
+
+    public static long getNumberOfEmployees() {
+        return employees.stream().count();
+    }
+
+    public static long getNumberOfEmployeesByName(String name) {
+        return employees.stream().filter(e -> e.getName().equals(name)).count();
+    }
+}
+```
+
 ### Ejercicio 2
 
 Basándose en el código del ejercicio anterior, implemente una API para una tienda de videojuegos, teniendo en cuenta lo siguiente:
@@ -394,6 +475,159 @@ Basándose en el código del ejercicio anterior, implemente una API para una tie
     - Obtener la suma de los precios de los videojuegos agrupados por cateogoría, siempre que el precio obtenido de la suma sea superior a 200€.
 
 3. Implemente además un programa de prueba `Main` que ilustre el uso de las operaciones anteriores.
+
+
+### Respuestas Ejercicio 2
+1. ### `Videogame.java`
+```java
+public class Videogame {
+    
+    private String title;
+    private String category;
+    private double price;
+    
+    public Videogame(String title, String category, double price) {
+        this.title = title;
+        this.category = category;
+        this.price = price;
+    }
+    
+    public String getTitle() {
+        return title;
+    }
+    
+    public void setTitle(String title) {
+        this.title = title;
+    }
+    
+    public String getCategory() {
+        return category;
+    }
+    
+    public void setCategory(String category) {
+        this.category = category;
+    }
+    
+    public double getPrice() {
+        return price;
+    }
+    
+    public void setPrice(double price) {
+        this.price = price;
+    }
+    
+}
+```
+
+### `VideogameDatabase.java`
+```java
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
+public class VideogameDatabase {
+
+    private List<Videogame> videogames;
+
+    public VideogameDatabase() {
+        videogames = new ArrayList<>(Arrays.asList(
+                new Videogame("Resident Evil", "terror", 15.99),
+                new Videogame("The Last of Us Part II", "acción", 49.99),
+                new Videogame("Silent Hill", "terror", 25.50),
+                new Videogame("Super Mario Odyssey", "aventura", 39.99),
+                new Videogame("Halo 5: Guardians", "shooter", 22.00),
+                new Videogame("Dead Space", "terror", 19.99),
+                new Videogame("Uncharted 4: El desenlace del ladrón", "acción", 29.95),
+                new Videogame("God of War", "acción", 44.95),
+                new Videogame("Bloodborne", "acción", 17.90),
+                new Videogame("The Legend of Zelda: Breath of the Wild", "aventura", 54.99)
+        ));
+    }
+
+    public List<String> getAllTitles() {
+        return videogames.stream().map(Videogame::getTitle).collect(Collectors.toList());
+    }
+
+    public List<String> getTitlesByPriceOver(double price) {
+        return videogames.stream().filter(v -> v.getPrice() > price).map(Videogame::getTitle).collect(Collectors.toList());
+    }
+
+    public List<String> getTitlesByCategory(String category) {
+        return videogames.stream().filter(v -> v.getCategory().equals(category)).map(Videogame::getTitle).collect(Collectors.toList());
+    }
+
+    public List<String> getTitlesByPriceOverSorted(double price) {
+        return videogames.stream().filter(v -> v.getPrice() > price).sorted(Comparator.comparingDouble(Videogame::getPrice)).map(Videogame::getTitle).collect(Collectors.toList());
+    }
+
+    public List<String> getTitlesByPriceOverSortedDesc(double price) {
+        return videogames.stream().filter(v -> v.getPrice() > price).sorted(Comparator.comparingDouble(Videogame::getPrice).reversed()).map(Videogame::getTitle).collect(Collectors.toList());
+    }
+
+    public Map<String, Long> getNumberOfVideogamesByCategory() {
+        return videogames.stream().collect(Collectors.groupingBy(Videogame::getCategory, Collectors.counting()));
+    }
+
+    public Map<String, Double> getTotalPriceByCategory() {
+        return videogames.stream().collect(Collectors.groupingBy(Videogame::getCategory, Collectors.summingDouble(Videogame::getPrice)));
+    }
+
+    public Map<String, Double> getTotalPriceByCategoryOver200() {
+        return videogames.stream().collect(Collectors.groupingBy(Videogame::getCategory, Collectors.summingDouble(Videogame::getPrice))).entrySet().stream().filter(e -> e.getValue() > 200).collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+    }
+}
+```
+3. ### `Main.java`
+```java
+import java.util.*;
+
+public class Main {
+    public static void main(String[] args) {
+        // Crear lista de videojuegos
+        List<Videogame> videogames = Arrays.asList(
+                new Videogame("The Last of Us", "Aventura", 29.99),
+                new Videogame("Resident Evil Village", "Terror", 49.99),
+                new Videogame("Super Mario Odyssey", "Plataformas", 39.99),
+                new Videogame("FIFA 22", "Deportes", 59.99),
+                new Videogame("Minecraft", "Simulación", 19.99),
+                new Videogame("The Witcher 3", "Rol", 29.99)
+        );
+
+        // Crear base de datos de videojuegos
+        VideogameDatabase database = new VideogameDatabase(videogames);
+
+        // Listar todos los títulos de los videojuegos
+        database.listTitles().forEach(System.out::println);
+
+        // Listar todos los títulos de los videojuegos cuyo precio sea superior a 20€
+        database.listTitlesOverPrice(20).forEach(System.out::println);
+
+        // Listar todos los títulos de los videojuegos cuya categoría sea terror
+        database.listTitlesByCategory("Terror").forEach(System.out::println);
+
+        // Listar todos los títulos de los videojuegos cuyo precio sea superior a 20€ ordenados ascendentemente por el precio
+        database.listTitlesOverPriceOrderedByPriceAsc(20).forEach(System.out::println);
+
+        // Listar todos los títulos de los videojuegos cuyo precio sea superior a 20€ ordenados descendentemente por el precio
+        database.listTitlesOverPriceOrderedByPriceDesc(20).forEach(System.out::println);
+
+        // Obtener el número de videojuegos agrupados por categoría
+        Map<String, Long> gamesByCategory = database.countGamesByCategory();
+        gamesByCategory.forEach((category, count) -> System.out.println(category + ": " + count));
+
+        // Obtener la suma de los precios de los videojuegos agrupados por categoría
+        Map<String, Double> sumPricesByCategory = database.sumPricesByCategory();
+        sumPricesByCategory.forEach((category, sum) -> System.out.println(category + ": " + sum));
+
+        // Obtener la suma de los precios de los videojuegos agrupados por cateogoría, siempre que el precio obtenido de la suma sea superior a 200€
+        Map<String, Double> sumPricesByCategoryOver200 = database.sumPricesByCategoryOverPrice(200);
+        sumPricesByCategoryOver200.forEach((category, sum) -> System.out.println(category + ": " + sum));
+    }
+}
+```
 
 ## Referencias
 
