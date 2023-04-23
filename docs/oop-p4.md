@@ -245,6 +245,241 @@ b) En la clase `ShoppingCart.java`:
 
 Dado el código del primer ejercicio, ¿existe algún uso indebido del valor `null`?. En caso afirmativo, reemplazar su uso por el de la clase `Optional` en los casos en los que sea necesario.
 
+
+## Respuestas
+### Ejercicio 1
+a)
+```java
+public class Product {
+
+private int code;
+private String name;
+private String category;
+private double weight;
+private double height;
+
+public Product(int code, String name, String category, double weight, double height) {
+	
+	assert code >= 0 : "Error: El valor del código no puede ser negativo";
+	assert !name.isEmpty() : "Error: El valor del nombre no puede estar vacío";
+	assert !category.isEmpty() : "Error: El valor de la categoría no puede estar vacío";
+	assert weight >= 0 : "Error: El valor del peso no puede ser negativo";
+	assert height >= 0 : "Error: El valor de la altura no puede ser negativo";
+	
+	this.code = code;
+	this.name = name;
+	this.category = category;
+	this.weight = weight;
+	this.height = height;
+}
+
+public int getCode() {
+	return code;
+}
+
+public void setName(String name) {
+	assert !name.isEmpty() : "Error: El valor del nombre no puede estar vacío";
+	this.name = name;
+}
+
+public String getName() {
+	return this.name;
+}
+
+public void setCategory(String category) {
+	assert !category.isEmpty() : "Error: El valor de la categoría no puede estar vacío";
+	this.category = category;
+}
+
+public String getCategory() {
+	return this.category;
+}
+
+public void setWeight(double weight) {
+	assert weight >= 0 : "Error: El valor del peso no puede ser negativo";
+	this.weight = weight;
+}
+
+public double getWeight() {
+	return this.weight;
+}
+
+public void setHeight(double height) {
+	assert height >= 0 : "Error: El valor de la altura no puede ser negativo";
+	this.height = height;
+}
+
+public double getHeight() {
+	return this.height;
+}
+
+}
+```
+b)
+```java
+import java.util.HashMap;
+import java.util.Map;
+
+public class ShoppingCart {
+Map<Product, Integer> shoppingCart;
+
+public ShoppingCart() {
+	shoppingCart = new HashMap<Product, Integer>();
+}
+
+public void addProduct(Product product, int number) {
+	assert number > 0 : "Number of units must be greater than zero";
+	
+	if(shoppingCart.keySet().stream().filter(element -> element.getCode() == product.getCode()).count() == 0) {
+		shoppingCart.put(product, number);
+	}
+}
+
+public void removeProduct(Product product) {
+	if(shoppingCart.containsKey(product)) {
+		shoppingCart.remove(product);
+	} else {
+		throw new IllegalArgumentException("Product not found in the shopping cart.");
+	}
+}
+
+public void printShoppingCartContent() {
+	System.out.println("The shopping cart content is: ");
+	
+	for(Product product: shoppingCart.keySet()) {
+		System.out.println(product.getCode() + " - " + product.getName() + " : " + shoppingCart.get(product));
+	}
+	
+}
+}
+```
+
+### Ejercicio 2
+En la clase Product, hay dos casos en los que se asigna un valor predeterminado vacío ("") a un atributo en lugar de asignarle null. Esto es un problema ya que un valor vacío y null son conceptos diferentes y pueden tener diferentes significados en la lógica del programa. En lugar de asignar un valor vacío, debería asignarse null y luego validar en los métodos de acceso que el valor no sea null.
+
+En la clase ShoppingCart, en el método removeProduct(), se devuelve null cuando se intenta eliminar un producto que no existe en el carrito. Esto podría ser confuso para el cliente de la clase, ya que no queda claro si null significa que el producto se ha eliminado correctamente o si simplemente no se encontró en el carrito. Sería mejor lanzar una excepción en este caso, lo que permitiría al cliente manejar la situación de manera más explícita y adecuada.
+## `Product.java`
+En la clase Product, se puede usar la clase Optional para devolver un valor vacío en caso de que se intente crear un objeto Product con un valor null para name o category. Además, se puede usar Optional para verificar si el valor de code, weight o height es negativo y, si es así, devolver un Optional vacío en lugar de lanzar una excepción.
+```java
+import java.util.Optional;
+
+public class Product {
+	
+	private int code;
+	private String name;
+	private String category;
+	private double weight;
+	private double height;
+	
+	public Product(int code, String name, String category, double weight, double height) {
+		
+		if (code < 0 || weight < 0 || height < 0) {
+			throw new IllegalArgumentException("Invalid argument: code, weight and height must be positive.");
+		}
+		
+		Optional<String> optName = Optional.ofNullable(name);
+		this.name = optName.orElse("");
+		
+		Optional<String> optCategory = Optional.ofNullable(category);
+		this.category = optCategory.orElse("");
+		
+		this.code = code;
+		this.weight = weight;
+		this.height = height;
+	}
+	
+	public int getCode() {
+		return code;
+	}
+	
+	public void setName(String name) {
+		Optional<String> optName = Optional.ofNullable(name);
+		this.name = optName.orElse("");
+	}
+	
+	public String getName() {
+		return this.name;
+	}
+	
+	public void setCategory(String category) {
+		Optional<String> optCategory = Optional.ofNullable(category);
+		this.category = optCategory.orElse("");
+	}
+	
+	public String getCategory() {
+		return this.category;
+	}
+	
+	public void setWeight(double weight) {
+		if (weight < 0) {
+			throw new IllegalArgumentException("Invalid argument: weight must be positive.");
+		}
+		
+		this.weight = weight;
+	}
+	
+	public double getWeight() {
+		return this.weight;
+	}
+	
+	public void setHeight(double height) {
+		if (height < 0) {
+			throw new IllegalArgumentException("Invalid argument: height must be positive.");
+		}
+		
+		this.height = height;
+	}
+	
+	public double getHeight() {
+		return this.height;
+	}
+}
+```	
+
+## `ShoppingCart.java`
+En la clase ShoppingCart, se puede usar Optional para verificar si un producto ya existe en el carrito antes de intentar eliminarlo y devolver un Optional vacío en lugar de devolver null. Además, se puede usar Optional para verificar si el número de unidades a agregar es negativo o nulo y, si es así, devolver un Optional vacío en lugar de lanzar una excepción. Aquí está el código modificado:
+```java
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
+
+public class ShoppingCart {
+	
+	Map<Product, Integer> shoppingCart;
+	
+	public ShoppingCart() {
+		shoppingCart = new HashMap<Product, Integer>();
+	}
+	
+	public void addProduct(Product product, int number) {
+		Optional<Product> optionalProduct = Optional.ofNullable(product);
+		if(number > 0 && optionalProduct.isPresent() && shoppingCart.keySet().stream().noneMatch(element -> element.getCode() == product.getCode())) {
+			shoppingCart.put(product, number);
+		}
+	}
+	
+	public Optional<Product> removeProduct(Product product) {
+		Optional<Product> optionalProduct = Optional.ofNullable(product);
+		if(optionalProduct.isPresent() && shoppingCart.containsKey(product)) {
+			shoppingCart.remove(product);
+			return optionalProduct;
+		}  else {
+			return Optional.empty();
+		}
+	}
+	
+	public void printShoppingCartContent() {
+		System.out.println("The shopping cart content is: ");
+		
+		for(Product product: shoppingCart.keySet()) {
+			System.out.println(product.getCode() + " - " + product.getName() + " : " + shoppingCart.get(product));
+		}
+		
+	}
+}
+
+```
+
 ## Referencias
 
 [API Java]: https://docs.oracle.com/javase/8/docs/technotes/guides/language/assert.html

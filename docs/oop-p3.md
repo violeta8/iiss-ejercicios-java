@@ -249,22 +249,39 @@ b) Mostrar el mensaje "The database is empty" después de la ejecución de la op
 
 
 ## Respuestas
-a)
+2)
 ```java
 @Aspect
 public class LoginAspect {
-    @Before("execution(* Bank.createUser())")
-    public void before(JoinPoint joinPoint){
-        System.out.println("Before creating user..");
+    @Before ("execution(* Bank.makeTransaction()) || execution(* Bank.takeMoneyOut())")
+    public void before2(JoinPoint joinPoint){
+        System.out.println("The login is required");
     }
-    
-    @After("execution(* Bank.makeTransaction()) || execution(* Bank.takeMoneyOut())")
+
+    @After ("execution(* Bank.showUsers())")
     public void after(JoinPoint joinPoint){
-        System.out.println("After making transaction or taking money out..");
-    }
+        System.out.println("The database is empty");
+    }    
 }
 ```
-b)
+
+3)
+```java
+@Aspect
+public class LoginAspect {
+    
+    @Before("execution(* Bank.makeTransaction()) || execution(* Bank.takeMoneyOut())")
+    public void before(JoinPoint joinPoint){
+        System.out.println("The login is required");
+    }
+    
+    @After("execution(* Bank.showUsers())")
+    public void after(JoinPoint joinPoint){
+        System.out.println("The database is empty");
+    }
+}
+
+```
 
 
 

@@ -6,13 +6,13 @@ import org.aspectj.lang.annotation.Before;
 
 @Aspect
 public class LoginAspect {
-    @Before("execution(* Bank.createUser())")
-    public void before(JoinPoint joinPoint){
-        System.out.println("Before creating user..");
+    @Before ("execution(* Bank.makeTransaction()) || execution(* Bank.takeMoneyOut())")
+    public void before2(JoinPoint joinPoint){
+        System.out.println("The login is required");
     }
-    
-    @After("execution(* Bank.makeTransaction()) || execution(* Bank.takeMoneyOut())")
+
+    @After ("execution(* Bank.showUsers())")
     public void after(JoinPoint joinPoint){
-        System.out.println("After making transaction or taking money out..");
-    }
+        System.out.println("The database is empty");
+    }    
 }
