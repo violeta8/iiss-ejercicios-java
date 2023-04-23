@@ -248,6 +248,26 @@ b) Mostrar el mensaje "The database is empty" después de la ejecución de la op
 3. Finalmente, sustituir el fichero `LoginAspect.java` por el fichero `LoginAspect.aj` incluyendo la misma funcionalidad pero utilizando la sintaxis de AspectJ.
 
 
+## Respuestas
+a)
+```java
+@Aspect
+public class LoginAspect {
+    @Before("execution(* Bank.createUser())")
+    public void before(JoinPoint joinPoint){
+        System.out.println("Before creating user..");
+    }
+    
+    @After("execution(* Bank.makeTransaction()) || execution(* Bank.takeMoneyOut())")
+    public void after(JoinPoint joinPoint){
+        System.out.println("After making transaction or taking money out..");
+    }
+}
+```
+b)
+
+
+
 ## Referencias
 
 ### Herramientas de construcción
