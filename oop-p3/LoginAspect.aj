@@ -1,17 +1,12 @@
-import org.aspectj.lang.JoinPoint;
-import org.aspectj.lang.annotation.After;
-import org.aspectj.lang.annotation.Aspect;
-import org.aspectj.lang.annotation.Before;
-
-@Aspect
-public class LoginAspect {
-    @Before("execution(* Bank.makeTransaction()) || execution(* Bank.takeMoneyOut())")
-    public void before2(JoinPoint joinPoint) {
-        System.out.println("The login is required");
-    }
-
-    @After("execution(* Bank.showUsers())")
-    public void after(JoinPoint joinPoint) {
-        System.out.println("The database is empty");
-    }
+public aspect LoginAspect{
+	pointcut loginRequired() : call(* Bank.makeTransaction()) || call(* Bank.takeMoneyOut());
+	pointcut emptyDatabase() : call(* Bank.showUsers());
+	
+	before(): loginRequired() {
+		System.out.println("Login required.");
+	}
+	
+	after(): emptyDatabase() {
+		System.out.println("Database is empty.");
+	}
 }
