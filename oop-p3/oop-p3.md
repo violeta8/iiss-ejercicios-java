@@ -229,7 +229,7 @@ Puede emplear los siguientes comandos para compilar, limpiar y/o generar un fich
 
 Para ejecutar, por ejemplo, una clase principal `Main` dentro del jar generado para el proyecto `ejercicio-aspectj` (según la configuración del `pom.xml` incluida en el proyecto), se puede usar el siguiente comando:
 
-```shel
+```shell
 java -cp target/ejercicio-aspectj-0.0.1-SNAPSHOT-jar-with-dependencies.jar Main
 ```
 
@@ -265,7 +265,8 @@ public class LoginAspect {
 }
 ```
 
-3)
+3.
+
 ```java
 @Aspect
 public class LoginAspect {
